@@ -1,0 +1,441 @@
+package bloodbowl.model.teams;
+import java.util.ArrayList;
+
+import bloodbowl.model.players.*;
+
+public abstract class Team {
+    String name;
+    int teamID;     //Team A=1 or Team B=2
+    int teamType;   //Human, Elf or Orc
+    int turns;      //Turns done
+    int scores;
+    int totalPlayers;
+    int wins;
+    int ties;
+    int looses;
+    protected int numLineman, numCatcher, numThrower, numBlitzer, numOgre, numGoblin, numBlackorc, numTroll;
+    protected int maxLineman, maxCatcher, maxThrower, maxBlitzer, maxOgre, maxGoblin, maxBlackorc, maxTroll;
+    
+    String[] typeOfAvailablePlayers;    //Available player types that can be the part of this team
+    ArrayList<Player> pList;
+
+    /********************Constants**********************/
+    public static int HUMAN_TYPE=0,ELF_TYPE=1,ORC_TYPE=2;
+    /***************************************************/
+    
+    public Team()
+    {
+            pList=new ArrayList();
+            linemanSkills=new ArrayList();
+            blackorcSkills=new ArrayList();
+            blitzerSkills=new ArrayList();
+            catcherSkills=new ArrayList();
+            goblinSkills=new ArrayList();
+            ogreSkills=new ArrayList();
+            throwerSkills=new ArrayList();
+            trollSkills=new ArrayList();
+    }
+
+    /***************Team's Properties Getter Methods**************************/
+    public int getType() {
+        return teamType;
+    }
+
+    public ArrayList<Player> getPlayers()
+    {
+        return pList;
+    }
+
+    public String[] getAvailablePlayerOptions()
+    {
+        return typeOfAvailablePlayers;
+    }
+    
+    public int getTies() {
+        return ties;
+    }
+
+    public int getTurns() {
+        return turns;
+    }
+
+    public int getLooses() {
+        return looses;
+    }
+
+    public int getScores() {
+        return scores;
+    }
+
+    public int getWins() {
+        return wins;
+    }
+    public int getID()
+    {
+        return teamID;
+    }
+
+    public void setID(int teamID)
+    {
+        this.teamID=teamID;
+    }
+    
+    public Player getPlayer(int i)
+    {
+            return pList.get(i);
+    }
+    public int getTotalPlayers()
+    {
+            return totalPlayers;
+    }
+    public String getName()
+    {
+        return name;
+    }
+
+    /*****************************Player count getters***********************/
+    public int getMaxBlackorc() {
+        return maxBlackorc;
+    }
+
+    public int getMaxBlitzer() {
+        return maxBlitzer;
+    }
+
+    public int getMaxCatcher() {
+        return maxCatcher;
+    }
+
+    public int getMaxGoblin() {
+        return maxGoblin;
+    }
+
+    public int getMaxLineman() {
+        return maxLineman;
+    }
+
+    public int getMaxOgre() {
+        return maxOgre;
+    }
+
+    public int getMaxThrower() {
+        return maxThrower;
+    }
+
+    public int getMaxTroll() {
+        return maxTroll;
+    }
+
+    public int getNumBlackorc() {
+        return numBlackorc;
+    }
+
+    public int getNumBlitzer() {
+        return numBlitzer;
+    }
+
+    public int getNumCatcher() {
+        return numCatcher;
+    }
+
+    public int getNumGoblin() {
+        return numGoblin;
+    }
+
+    public int getNumLineman() {
+        return numLineman;
+    }
+
+    public int getNumOgre() {
+        return numOgre;
+    }
+
+    public int getNumThrower() {
+        return numThrower;
+    }
+
+    public int getNumTroll() {
+        return numTroll;
+    }
+
+    /************************************************************************/
+    public boolean isValidPlayerAddition(int playerType)
+    {
+        boolean validAddition=false;
+        if(totalPlayers<16)
+        {
+            if(playerType==Player.BLACKORC && numBlackorc<maxBlackorc)
+            {
+                validAddition=true;
+                numBlackorc++;
+            }
+            else if(playerType==Player.BLITZER && numBlitzer<maxBlitzer)
+            {
+                validAddition=true;
+                numBlitzer++;
+            }
+            else if(playerType==Player.CATCHER && numCatcher<maxCatcher)
+            {
+                validAddition=true;
+                numCatcher++;
+            }
+            else if(playerType==Player.GOBLIN && numGoblin<maxGoblin)
+            {
+                validAddition=true;
+                numGoblin++;
+            }
+            else if(playerType==Player.LINEMAN && numLineman<maxLineman)
+            {
+                validAddition=true;
+                numLineman++;
+            }
+            else if(playerType==Player.OGRE && numOgre<maxOgre)
+            {
+                validAddition=true;
+                numOgre++;
+            }
+            else if(playerType==Player.THROWER && numThrower<maxThrower)
+            {
+                validAddition=true;
+                numThrower++;
+            }
+            else if(playerType==Player.TROLL && numTroll<maxTroll)
+            {
+                validAddition=true;
+                numTroll++;
+            }
+        }
+        return validAddition;
+    }
+    public void addPlayer(Player p)
+    {
+        pList.add(p);
+        totalPlayers++;
+    }
+    public void removePlayer(int pIndex)
+    {
+        int playerType=pList.get(pIndex).getType();
+        if(playerType==Player.BLACKORC)
+            numBlackorc--;
+        if(playerType==Player.BLITZER)
+            numBlitzer--;
+        if(playerType==Player.CATCHER)
+            numCatcher--;
+        if(playerType==Player.GOBLIN)
+            numGoblin--;
+        if(playerType==Player.LINEMAN)
+            numLineman--;
+        if(playerType==Player.OGRE)
+            numOgre--;
+        if(playerType==Player.THROWER)
+            numThrower--;
+        if(playerType==Player.TROLL)
+            numTroll--;
+        pList.remove(pIndex);
+        totalPlayers--;
+    }
+
+    @Override public String toString()
+    {
+        return name;
+    }
+   
+    //Only for debugging in console
+    public void displayTeamDetails()        
+    {
+        System.out.println("Team:"+name);
+        System.out.println("Values for max count of each type of player.");
+        System.out.println("--------------------------------------------");
+        System.out.println(maxLineman);
+        System.out.println(maxCatcher);
+        System.out.println(maxThrower);
+        System.out.println(maxBlitzer);
+        System.out.println(maxOgre);
+        System.out.println(maxGoblin);
+        System.out.println(maxBlackorc);
+        System.out.println(maxTroll);
+    }
+
+    /**************************Player Creation Rules**********************/
+
+    //Player Chanracterisitcs and Skills for different players.
+    //If a new type of player is to be added, its characteristics and skills should go here.
+
+    int linemanMA,linemanST,linemanAG,linemanAV;
+    int blackorcMA,blackorcST,blackorcAG,blackorcAV;
+    int blitzerMA,blitzerST,blitzerAG,blitzerAV;
+    int catcherMA,catcherST,catcherAG,catcherAV;
+    int goblinMA,goblinST,goblinAG,goblinAV;
+    int ogreMA,ogreST,ogreAG,ogreAV;
+    int throwerMA,throwerST,throwerAG,throwerAV;
+    int trollMA,trollST,trollAG,trollAV;
+
+    ArrayList<Skills> linemanSkills,blackorcSkills,blitzerSkills,catcherSkills,
+            goblinSkills,ogreSkills,throwerSkills,trollSkills;
+
+    //Getter Methods for getting these characteristics and skills.
+    //These have to be updated as well in order to accomodate the new player.
+    
+    public int getBlackorcAG() {
+        return blackorcAG;
+    }
+
+    public int getBlackorcAV() {
+        return blackorcAV;
+    }
+
+    public int getBlackorcMA() {
+        return blackorcMA;
+    }
+
+    public int getBlackorcST() {
+        return blackorcST;
+    }
+
+    public ArrayList<Skills> getBlackorcSkills() {
+        return blackorcSkills;
+    }
+
+    public int getBlitzerAG() {
+        return blitzerAG;
+    }
+
+    public int getBlitzerAV() {
+        return blitzerAV;
+    }
+
+    public int getBlitzerMA() {
+        return blitzerMA;
+    }
+
+    public int getBlitzerST() {
+        return blitzerST;
+    }
+
+    public ArrayList<Skills> getBlitzerSkills() {
+        return blitzerSkills;
+    }
+
+    public int getCatcherAG() {
+        return catcherAG;
+    }
+
+    public int getCatcherAV() {
+        return catcherAV;
+    }
+
+    public int getCatcherMA() {
+        return catcherMA;
+    }
+
+    public int getCatcherST() {
+        return catcherST;
+    }
+
+    public ArrayList<Skills> getCatcherSkills() {
+        return catcherSkills;
+    }
+
+    public int getGoblinAG() {
+        return goblinAG;
+    }
+
+    public int getGoblinAV() {
+        return goblinAV;
+    }
+
+    public int getGoblinMA() {
+        return goblinMA;
+    }
+
+    public int getGoblinST() {
+        return goblinST;
+    }
+
+    public ArrayList<Skills> getGoblinSkills() {
+        return goblinSkills;
+    }
+
+    public int getLinemanAG() {
+        return linemanAG;
+    }
+
+    public int getLinemanAV() {
+        return linemanAV;
+    }
+
+    public int getLinemanMA() {
+        return linemanMA;
+    }
+
+    public int getLinemanST() {
+        return linemanST;
+    }
+
+    public ArrayList<Skills> getLinemanSkills() {
+        return linemanSkills;
+    }
+
+    public int getOgreAG() {
+        return ogreAG;
+    }
+
+    public int getOgreAV() {
+        return ogreAV;
+    }
+
+    public int getOgreMA() {
+        return ogreMA;
+    }
+
+    public int getOgreST() {
+        return ogreST;
+    }
+
+    public ArrayList<Skills> getOgreSkills() {
+        return ogreSkills;
+    }
+
+    public int getThrowerAG() {
+        return throwerAG;
+    }
+
+    public int getThrowerAV() {
+        return throwerAV;
+    }
+
+    public int getThrowerMA() {
+        return throwerMA;
+    }
+
+    public int getThrowerST() {
+        return throwerST;
+    }
+
+    public ArrayList<Skills> getThrowerSkills() {
+        return throwerSkills;
+    }
+
+    public int getTrollAG() {
+        return trollAG;
+    }
+
+    public int getTrollAV() {
+        return trollAV;
+    }
+
+    public int getTrollMA() {
+        return trollMA;
+    }
+
+    public int getTrollST() {
+        return trollST;
+    }
+
+    public ArrayList<Skills> getTrollSkills() {
+        return trollSkills;
+    }
+
+
+    /*********************************************************************/
+}

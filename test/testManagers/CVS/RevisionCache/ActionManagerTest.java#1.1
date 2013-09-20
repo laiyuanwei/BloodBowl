@@ -1,0 +1,55 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package testManagers;
+
+import bloodbowl.engine.Game;
+import bloodbowl.engine.Game;
+import bloodbowl.model.map.PitchGrid;
+import bloodbowl.model.managers.ActionManager;
+import bloodbowl.model.managers.ActionManager;
+import junit.framework.Assert;
+import junit.framework.TestCase;
+
+/**
+ *
+ * @author Yuanwei Lai
+ */
+public class ActionManagerTest extends TestCase {
+    private ActionManager actionManager=null;
+    private Game game=null;
+    PitchGrid pitch=null;
+    
+    public ActionManagerTest(String testName) {
+        super(testName);
+    }
+
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        actionManager=new ActionManager();
+        //game=new Game();
+       pitch=new PitchGrid();
+    }
+
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+    }
+
+   
+    /**
+     * Test of moveSelectedPlayerAt method, of class ActionManager.
+     */
+    public void testMoveSelectedPlayerAt() {
+
+       
+        Assert.assertEquals(false,actionManager.moveSelectedPlayerAt(pitch.getCell(3,3)));
+        Assert.assertEquals(false,actionManager.moveSelectedPlayerAt(pitch.getCell(3,4)));
+        Assert.assertEquals(false,actionManager.moveSelectedPlayerAt(pitch.getCell(4,4)));
+        Assert.assertEquals(false,actionManager.moveSelectedPlayerAt(pitch.getCell(5,4)));
+    }
+
+}

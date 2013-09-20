@@ -1,0 +1,360 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package bloodbowl.engine;
+
+/**
+ *
+ * @author singh
+ */
+import bloodbowl.model.managers.TeamManager;
+import bloodbowl.model.managers.ActionManager;
+import bloodbowl.model.map.*;
+import bloodbowl.model.players.Player;
+import bloodbowl.model.teams.*;
+import java.util.Random;
+
+public final class Game {
+
+    PitchGrid pitch;                    //Common pitch for both the teams
+    DugoutGrid dugoutA, dugoutB;        //Two seperate dugouts for both the teams
+    TeamManager teamManager;
+    ActionManager actionManager;
+    Team teamA, teamB;
+    Player selectedPlayer;              //Player currently selected i.e. clicked by the mouse
+    int currentTeam;                    //Stores the team ID which has its turn.
+    boolean isWaitingForAction;         //Flag to inform if the game is waiting for some action.
+    private static Game instance = null;
+    /************************Constants***********************/
+    int TEAM_A = 1, TEAM_B = 2;
+
+    /********************************************************/
+    private Game() {
+        pitch = new PitchGrid();
+        dugoutA = new DugoutGrid();
+        dugoutB = new DugoutGrid();
+        teamManager = new TeamManager();
+        actionManager = new ActionManager();
+        isWaitingForAction = false;
+    }
+
+    public static Game getInstance() {
+        if (instance == null) {
+            instance = new Game();
+        }
+        return instance;
+    }
+
+    public void initiateNewAction() //To set the game to accept an input
+    {
+        isWaitingForAction = true;
+    }
+
+    public void commitCurrentAction() //To commit the action made
+    {
+        isWaitingForAction = false;
+        selectedPlayer.resetMovementLeft(); //Recharge the Movement Allowance for next turn
+        selectedPlayer = null;
+    }
+
+    public boolean isWaitingForSomeAction() {
+        return isWaitingForAction;
+    }
+
+    public Player getSelectedPlayer() {
+        return selectedPlayer;
+    }
+
+    public Player getPlayerAtDugoutA(int row, int column) {
+
+        selectedPlayer = null;
+        for (Player p : teamA.getPlayers()) {
+            if (p.getLocation().getRow() == row && p.getLocation().getColumn() == column) {
+                selectedPlayer = p;
+                break;
+            }
+        }
+
+        return selectedPlayer;
+    }
+
+    public Player getPlayerAtDugoutB(int row, int column) {
+
+        selectedPlayer = null;
+        int i=0;
+        for (Player p : teamB.getPlayers()) {
+            if (p.getLocation().getRow() == row && p.getLocation().getColumn() == column) {
+                selectedPlayer = p;
+                System.out.println(i);
+                i+=1;
+                break;
+            }
+        }
+        return selectedPlayer;
+    }
+
+    public Player getPlayerAtPitch(int row, int column) {
+
+        selectedPlayer = null;
+        for (Player p : teamA.getPlayers()) {
+            if (p.getLocation().getRow() == row && p.getLocation().getColumn() == column) {
+                selectedPlayer = p;
+                break;
+            }
+        }
+
+        if (selectedPlayer == null) {            
+            for (Player p : teamB.getPlayers()) {
+                if (p.getLocation().getRow() == row && p.getLocation().getColumn() == column) {
+                    selectedPlayer = p;
+                    break;
+                }
+            }
+        }
+        return selectedPlayer;
+    }
+
+    public void placePlayerAtPitchCell(int row, int column) {
+        if (!(pitch.getCell(row, column)).hasPlayer()) {           
+            selectedPlayer.setLocation((pitch.getCell(row, column)));
+            System.out.println("after: " + pitch.getCell(row, column));
+        } else {
+            System.out.println("Unsuccessful Placement");
+        }
+    }
+
+    /*
+    public boolean isValidPlacement(Cell destinationOnPitch)
+    {
+    boolean validPlacement=false;
+
+    final int MAX_ALLOWED_IN_WIDE_ZONE1=2,
+    MAX_ALLOWED_IN_WIDE_ZONE2=2,MIN_ALLOWED_IN_SCRIMMAGE_ZONE=3;
+
+    int playersInWideZone1=0,playersInWideZone2=0,playersInScrimmageZone=0;
+    if(!destinationOnPitch.hasPlayer())
+    {
+    if(selectedPlayer.getTeamID()==TEAM_A)
+    {
+    if(destinationOnPitch.getColumn()<=13&&destinationOnPitch.getColumn()!=0)
+    {
+    for(int i=0;i<15;i++)
+    {
+    for(int j=0;j<13;j++)
+    {
+    if((pitch.getCell(i, j)).getZone() == PitchCell.WIDE_ZONE_UPPER && (pitch.getCell(i, j)).hasPlayer())
+    playersInWideZone1++;
+    else if((pitch.getCell(i, j)).getZone()==PitchCell.WIDE_ZONE_LOWER && (pitch.getCell(i, j)).hasPlayer())
+    playersInWideZone2++;
+    else if((pitch.getCell(i, j)).getZone()==PitchCell.SCRIMMAGE_ZONE && (pitch.getCell(i, j)).hasPlayer())
+    playersInScrimmageZone++;
+    }
+    }
+    if(playersInWideZone1<=MAX_ALLOWED_IN_WIDE_ZONE1 && playersInWideZone2<=MAX_ALLOWED_IN_WIDE_ZONE2 && playersInScrimmageZone>=MIN_ALLOWED_IN_SCRIMMAGE_ZONE)
+    validPlacement=true;
+    }
+    }
+    else
+    {
+    if(destinationOnPitch.getColumn()>=14&&destinationOnPitch.getColumn()!=25)
+    {
+    for(int i=0;i<15;i++)
+    {
+    for(int j=14;j<26;j++)
+    {
+    if((pitch.getCell(i, j)).getZone() == PitchCell.WIDE_ZONE_UPPER && (pitch.getCell(i, j)).hasPlayer())
+    playersInWideZone1++;
+    else if((pitch.getCell(i, j)).getZone()==PitchCell.WIDE_ZONE_LOWER && (pitch.getCell(i, j)).hasPlayer())
+    playersInWideZone2++;
+    else if((pitch.getCell(i, j)).getZone()==PitchCell.SCRIMMAGE_ZONE && (pitch.getCell(i, j)).hasPlayer())
+    playersInScrimmageZone++;
+    }
+    }
+    if(playersInWideZone1<=MAX_ALLOWED_IN_WIDE_ZONE1 && playersInWideZone2<=MAX_ALLOWED_IN_WIDE_ZONE2 && playersInScrimmageZone>=MIN_ALLOWED_IN_SCRIMMAGE_ZONE)
+    validPlacement=true;
+    }
+    }
+    }
+    return validPlacement;
+    }*/
+
+    /*
+    public boolean isValidPlacement(Cell destinationOnPitch)
+    {
+    boolean validPlacement=false;
+
+    final int MAX_ALLOWED_IN_WIDE_ZONE1=2,
+    MAX_ALLOWED_IN_WIDE_ZONE2=2,MIN_ALLOWED_IN_SCRIMMAGE_ZONE=3;
+
+    int playersInWideZone1=0,playersInWideZone2=0,playersInScrimmageZone=0;
+    if(!destinationOnPitch.hasPlayer())
+    {
+    if(selectedPlayer.getTeamID()==TEAM_A)
+    {
+    if(destinationOnPitch.getColumn()<=13&&destinationOnPitch.getColumn()!=0)
+    {
+    for(int i=0;i<15;i++)
+    {
+    for(int j=0;j<13;j++)
+    {
+    if((pitch.getCell(i, j)).getZone() == PitchCell.WIDE_ZONE_UPPER && (pitch.getCell(i, j)).hasPlayer())
+    playersInWideZone1++;
+    else if((pitch.getCell(i, j)).getZone()==PitchCell.WIDE_ZONE_LOWER && (pitch.getCell(i, j)).hasPlayer())
+    playersInWideZone2++;
+    else if((pitch.getCell(i, j)).getZone()==PitchCell.SCRIMMAGE_ZONE && (pitch.getCell(i, j)).hasPlayer())
+    playersInScrimmageZone++;
+    }
+    }
+    if(playersInWideZone1<=MAX_ALLOWED_IN_WIDE_ZONE1 && playersInWideZone2<=MAX_ALLOWED_IN_WIDE_ZONE2 && playersInScrimmageZone>=MIN_ALLOWED_IN_SCRIMMAGE_ZONE)
+    validPlacement=true;
+    }
+    }
+    else
+    {
+    if(destinationOnPitch.getColumn()>=14&&destinationOnPitch.getColumn()!=25)
+    {
+    for(int i=0;i<15;i++)
+    {
+    for(int j=14;j<26;j++)
+    {
+    if((pitch.getCell(i, j)).getZone() == PitchCell.WIDE_ZONE_UPPER && (pitch.getCell(i, j)).hasPlayer())
+    playersInWideZone1++;
+    else if((pitch.getCell(i, j)).getZone()==PitchCell.WIDE_ZONE_LOWER && (pitch.getCell(i, j)).hasPlayer())
+    playersInWideZone2++;
+    else if((pitch.getCell(i, j)).getZone()==PitchCell.SCRIMMAGE_ZONE && (pitch.getCell(i, j)).hasPlayer())
+    playersInScrimmageZone++;
+    }
+    }
+    if(playersInWideZone1<=MAX_ALLOWED_IN_WIDE_ZONE1 && playersInWideZone2<=MAX_ALLOWED_IN_WIDE_ZONE2 && playersInScrimmageZone>=MIN_ALLOWED_IN_SCRIMMAGE_ZONE)
+    validPlacement=true;
+    }
+    }
+    }
+    return validPlacement;
+    }*/
+    public void setSelectedPlayer(Player selectedPlayer) {
+        this.selectedPlayer = selectedPlayer;
+    }
+
+    public int getCurrentTeam() {
+        return currentTeam;
+    }
+
+    public void setCurrentTeam(int currentTeam) {
+        this.currentTeam = currentTeam;
+    }
+
+    public Team getOpponentTeam() {
+        if (currentTeam == 1) {
+            return teamB;
+        } else {
+            return teamA;
+        }
+    }
+
+    public Team getTeamA() {
+        return teamA;
+    }
+
+    public Team getTeamB() {
+        return teamB;
+    }
+
+    public void setTeamA(Team teamA) {
+        this.teamA = teamA;
+    }
+
+    public void setTeamB(Team teamB) {
+        this.teamB = teamB;
+    }
+
+    //placing the players in reserves when a new game begins.
+    public void placeTeamsInReserves() {
+        for (int i = 0; i < teamA.getTotalPlayers(); i++) {
+            (teamA.getPlayer(i)).setUpOnLocation(dugoutA.getCell(i / 4, i % 4));
+        }
+        for (int i = 0; i < teamB.getTotalPlayers(); i++) {
+            (teamB.getPlayer(i)).setUpOnLocation(dugoutB.getCell(i / 4, i % 4));
+        }
+    }
+
+    /*************************For testing/debugging***************************/
+    
+    public void drawMap() {
+        dugoutA.drawGrid();
+        System.out.println("\n");
+
+        dugoutB.drawGrid();
+        System.out.println("\n");
+
+        pitch.drawGrid();
+    }
+
+    public void createTeamsForTest() {
+        teamManager.createTeam(TEAM_A, Team.HUMAN_TYPE, "Greek Gods");
+        teamManager.createPlayer(Player.LINEMAN);
+        teamManager.createPlayer(Player.LINEMAN);
+        teamManager.createPlayer(Player.LINEMAN);
+        teamManager.createPlayer(Player.LINEMAN);
+        teamManager.createPlayer(Player.LINEMAN);
+        teamA = teamManager.getTeam();        
+
+        teamManager.createTeam(TEAM_B, Team.ORC_TYPE, "Hell's Angels");
+        teamManager.createPlayer(Player.LINEMAN);
+        teamManager.createPlayer(Player.LINEMAN);
+        teamManager.createPlayer(Player.LINEMAN);
+        teamManager.createPlayer(Player.LINEMAN);
+        teamB = teamManager.getTeam();     
+    }
+
+    public void placePlayersOnPitchForTest() {
+        (teamA.getPlayer(1)).setUpOnLocation(pitch.getCell(3, 5));
+        (teamB.getPlayer(1)).setUpOnLocation(pitch.getCell(6, 5));
+        (teamA.getPlayer(2)).setUpOnLocation(pitch.getCell(3, 9));
+        (teamB.getPlayer(2)).setUpOnLocation(pitch.getCell(8, 5));
+    }
+
+    public void runTest() {
+        createTeamsForTest();   //Create 2 dummy teams
+        //placePlayersOnPitchForTest();   //Make some players active on pitch
+        //drawMap();          //draw the Map containing players
+        placeTeamsInReserves();
+
+        drawMap();
+        currentTeam = TEAM_A;                      //set teamA as active team
+
+//        getPlayerAtDugoutA(0,0);
+//        placePlayerAtPitchCell(1, 1);
+//        drawMap();
+
+        //selectedPlayer=teamA.getPlayer(1);     //set teamA[1] as selected player
+
+        //Set a new action
+//        actionManager.initiateAction(this);
+//        actionManager.selectedPlayerMove(pitch.getCell(3,6));
+//        actionManager.selectedPlayerMove(pitch.getCell(3,7));
+//        actionManager.selectedPlayerMove(pitch.getCell(3,8));
+//        actionManager.selectedPlayerMove(pitch.getCell(4,8));
+//        actionManager.selectedPlayerMove(pitch.getCell(5,8));
+//        actionManager.commitAction();
+
+    }
+
+    /**************************************************************************/
+//    public static void main(String args[]) {
+//        Game gt = new Game();
+//        gt.runTest();
+//    }
+    private static Random randToss;
+
+    public static boolean tossCoin(boolean isHead) {
+        randToss = new Random();
+        boolean outcome = randToss.nextBoolean();
+        if (outcome) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}

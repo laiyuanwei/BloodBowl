@@ -1,0 +1,324 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package testPlayers;
+
+
+import bloodbowl.model.map.DugoutCell;
+import bloodbowl.model.players.Actions;
+import bloodbowl.model.players.OrcBlackorc;
+import bloodbowl.model.players.PlayerStates;
+import bloodbowl.model.players.Skills;
+import junit.framework.Assert;
+import junit.framework.TestCase;
+
+import java.util.ArrayList;
+
+
+/**
+ * This class test OrcBlackorc class and its relevant methods.
+ * @author Yuanwei Lai
+ */
+public class OrcBlackorcTest extends TestCase {
+    ArrayList<Skills> skillsList = new ArrayList<Skills>();
+    private OrcBlackorc blackorc=null;
+    //private OrcBlackorc orcBlackorc=null;
+    private DugoutCell cell=null;
+    private DugoutCell newcell=null;
+    
+
+    
+    /**
+     * The constructor invoked the Super class constructor with using parameter testName.
+     * @param testName
+     */
+    public OrcBlackorcTest(String testName) {
+        super(testName);
+    }
+
+    /**
+     * This method instantiate the instance that needed in the test cases for the
+     * following test method purpose.
+     * @throws Exception
+     */
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        //blackorc=new Blackorc(1,2,3,4,10,skillsList,PlayerType.BLACKORC);
+        blackorc =new OrcBlackorc();
+        cell=new DugoutCell(1,2);
+        newcell=new  DugoutCell(1,2);
+       
+    }
+    
+    /**
+     * ThiS method is to end the test process.
+     * @throws Exception
+     */
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+    }
+
+    // TODO add test methods here. The name must begin with 'test'. For example:
+    // public void testHello() {}
+
+   
+
+    /**
+     * This method test the  MA value.
+     */
+    public void testGetMaLeft(){
+       Assert.assertEquals(4, blackorc.getMa());
+    }
+
+    /**
+     * This method test the decrease move method, and examine the maLeft value.
+     */
+    public void testDecreaseMovementLeft()
+    {
+        blackorc.decreaseMovementLeft();
+        Assert.assertEquals(3, blackorc.getMa()-1);
+        //maLeft--;
+    }
+    /**
+     * This method test the whether player can moved or not.
+     */
+    public void testCanMove()
+    {
+        boolean expected;
+        if(blackorc.getMa()>0)
+            expected=true;
+        else
+            expected=false;
+       Assert.assertEquals(false,blackorc.canMove());
+    }
+   /**
+    * This method test the set team id method.
+    */
+   public void testSetTeamID()
+    {
+        blackorc.setTeamID(5);
+        Assert.assertEquals(5,blackorc.getTeamID());
+        
+        
+    }
+
+   /**
+    * This method test the get team id method.
+    */
+   public void  testGetTeamID()
+    {
+        
+        Assert.assertEquals(0, blackorc.getTeamID());
+        //return teamID;
+    }
+   /**
+    * This method test the set location method.
+    */
+   public void testSetLocation()  //Method for relocation during gameplay
+    {
+        cell.resetPlayer();
+        //cell = (PitchCell) newcell;
+        cell.setPlayer();
+        newcell.setPlayer();
+        blackorc.setActive();
+        //blackorc.setChanged();
+        Assert.assertEquals(true, cell.hasPlayer());
+        Assert.assertEquals(true,newcell.hasPlayer());
+
+
+    }
+
+    /**
+     * This method test the setup on location method.
+     */
+    public void testSetUpOnLocation() //Method for setting location at game start
+    {
+          newcell.setPlayer();
+          cell=newcell;
+          blackorc.setActive();
+          Assert.assertEquals(true, cell.hasPlayer());
+          Assert.assertEquals(true, newcell.hasPlayer());
+          Assert.assertEquals(true, blackorc.getActive());
+     }
+    /**
+     * This method test the get location method.
+     */
+    public void testGetLocation()
+    {
+        
+        Assert.assertEquals(1,cell.getRow());
+        Assert.assertEquals(2,cell.getColumn());
+        Assert.assertEquals(1,cell.getZone());
+        Assert.assertEquals(false,cell.hasPlayer());
+
+        }
+
+
+    /**
+     * This method test whether the statue can be set or not.
+     */
+    public void testSetActive() {
+        //this.isActive = true;
+        blackorc.setActive();
+        Assert.assertEquals(true, blackorc.getActive());
+        //setChanged();
+        //notifyObservers();
+    }
+
+
+    /**
+     * This method is test whether the get status method can work or not.
+     */
+    public void testGetActive() {
+       // return isActive;
+      Assert.assertEquals(false,blackorc.getActive());
+    }
+
+
+    /**
+     *  This method is test whether the MA value can be retrieve or not.
+     */
+    public void testGetMa() {
+        //return ma;
+        Assert.assertEquals(4, blackorc.getMa());
+       
+    }
+
+  
+    /**
+     * This method is test whether the get method of ST is work or not.
+     */
+    public void testGetSt() {
+        //return st;
+        Assert.assertEquals(4, blackorc.getSt());
+    }
+
+    /**
+     * This method is test whether the get method of AV is work or not.
+     */
+    public void testGetAv() {
+        //return av;
+        Assert.assertEquals(9, blackorc.getAv());
+    }
+
+    /**
+     * This method is test whether the hasMoved() is work or not.
+     */
+    public void testHasMoved(){
+        //return hasMoved;
+        Assert.assertEquals(false,blackorc.hasMoved());
+    }
+
+    /**
+     * This method is test whether the get method of AG is work or not.
+     */
+    public void testGetAg() {
+        Assert.assertEquals(2, blackorc.getAg());
+    }
+
+    /**
+     * This method is to test whether the movement
+     *  finished or not.
+     */
+    public void testDoneActionInTurn(){
+        blackorc.doneActionInTurn();
+        Assert.assertEquals(true,blackorc.hasMoved());
+    }
+
+     /**
+     * This method is to test whether can set method can get the injured state or not.
+     */
+    public void testSetInjuredState() {
+
+        //blitzer.setIsInjured(true);
+        Boolean actual;
+        blackorc.setState(PlayerStates.INJURED);
+        if(blackorc.getState()==PlayerStates.INJURED){
+         actual=true;
+        }
+        else
+         actual=false;
+        Assert.assertTrue(actual);
+    }
+
+    /**
+     * This method is to test the get method of injured state.
+     */
+    public void testGetInjuredState(){
+       blackorc.setState(PlayerStates.INJURED);
+       Assert.assertTrue(blackorc.getState()==PlayerStates.INJURED);
+    }
+
+    /**
+     * This method is to test whether can set method can get the injured state or not.
+     */
+    public void testSetKnockedOutState(){
+        Boolean actual;
+        blackorc.setState(PlayerStates.KNOCKED);
+        if(blackorc.getState()==PlayerStates.KNOCKED){
+         actual=true;
+        }
+        else
+         actual=false;
+        Assert.assertTrue(actual);
+    }
+
+    /**
+     * This method is to test the get method of knocked out state.
+     */
+    public void testGetKnockedOutState(){
+      blackorc.setState(PlayerStates.KNOCKED);
+       Assert.assertTrue(blackorc.getState()==PlayerStates.KNOCKED);
+    }
+
+    /**
+     * This method is to test whether the coach can increase
+     * MVP's point by default value(five points a time).
+     */
+    public void testSelectedMostValued() {
+        blackorc.selectedMostValued();
+        Assert.assertEquals(5,blackorc.getPoints());
+    }
+
+    /**
+     * This method is to test whether the coach can increase
+     * MVP's point by any points(user input).
+     */
+    public void testIncrementPointsBy() {
+        //points += addMorePoints;
+        blackorc.incrementPointsBy(10); // add 10 points
+        Assert.assertEquals(10,blackorc.getPoints());
+    }
+
+    /**
+     * This method is to test whether AwardPointsForAction method can return
+     * right score of player or not after an action. For example, a player perform
+     * a series action, the score should be sum of every action's score.
+     */
+    public void TestAwardPointsForAction() {
+
+        for(int i=0;i<=10;i++){
+        blackorc.awardPointsForAction(Actions.PASS);
+        blackorc.awardPointsForAction(Actions.KNOCKDOWN);
+        blackorc.awardPointsForAction(Actions.TACKLE);
+        blackorc.awardPointsForAction(Actions.TOUCHDOWN);
+        }
+        Assert.assertEquals(10*(1+2+2+3),blackorc.getPoints());
+    }
+
+    /**
+     * This method is to test the GetPoints method.
+     */
+    public void TestGetPoints(){
+        blackorc.incrementPointsBy(1);
+        Assert.assertEquals(1,blackorc.getPoints());
+    }
+
+
+
+
+}

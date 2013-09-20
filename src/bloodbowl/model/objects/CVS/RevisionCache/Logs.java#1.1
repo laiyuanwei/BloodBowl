@@ -1,0 +1,37 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package bloodbowl.model.objects;
+
+import bloodbowl.model.managers.*;
+import java.util.Observable;
+
+/**
+ * This class is responsible for logging all actions within
+ * the game engine
+ *
+ * @author mavencode
+ * 
+ * @version 1.0.0
+ */
+public class Logs extends Observable {
+
+    private String message;
+
+    public String getLog() {
+        return message;
+    }
+
+    public void log(String message) {
+        this.message = message;
+        
+        updateLog();
+    }
+
+    private void updateLog()
+    {
+         setChanged();
+         notifyObservers();
+    }
+}

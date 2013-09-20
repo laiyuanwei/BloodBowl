@@ -1,0 +1,57 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package testMap;
+
+import bloodbowl.model.map.PitchGrid;
+import junit.framework.Assert;
+import junit.framework.TestCase;
+
+/**
+ * This class is to test the pitch grid class and its relevant methods.
+ * @author Yuanwei Lai
+ */
+public class PitchGridTest extends TestCase {
+    private PitchGrid pitchgrid=null;
+    //private Cell cell=null;
+    
+    /**
+     * The constructor invoked the Super class constructor with using parameter testName.
+     * @param testName
+     */
+    public PitchGridTest(String testName) {
+        super(testName);
+    }
+
+    /**
+     * This method instantiate the instance of pitch grid and cell.
+     * @throws Exception
+     */
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        pitchgrid= new PitchGrid();
+      
+    }
+
+    /**
+     * ThiS method is to end the test process.
+     * @throws Exception
+     */
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+    }
+
+
+    /**
+     * Test of getCell method, of class PitchGrid.
+     * This method is test whether can get the cell location or not.
+     */
+    public void testGetCell() {
+       Assert.assertEquals(25, pitchgrid.getCell(14,25).getColumn());
+       Assert.assertEquals(14,pitchgrid.getCell(14, 25).getRow());
+    }
+}

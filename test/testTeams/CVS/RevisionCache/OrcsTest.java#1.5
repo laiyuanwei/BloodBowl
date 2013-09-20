@@ -1,0 +1,291 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package testTeams;
+
+import bloodbowl.model.players.ElvesBlitzer;
+import bloodbowl.model.players.Player;
+import bloodbowl.model.players.PlayerType;
+import bloodbowl.model.players.Skills;
+import bloodbowl.model.teams.Orcs;
+import bloodbowl.model.teams.TeamType;
+import java.util.ArrayList;
+import junit.framework.Assert;
+import junit.framework.TestCase;
+
+/**
+ * This class test Orcs class and its relevant methods.
+ * @author Yuanwei Lai
+ */
+public class OrcsTest extends TestCase {
+     private Orcs orcs=null;
+    //private Blackorc blackorc=null;
+    ArrayList<Skills> skillsList = new ArrayList<Skills>();
+    ArrayList<Player> player = new ArrayList<Player>();
+    
+    /**
+     *
+     * @param testName
+     */
+    public OrcsTest(String testName) {
+        super(testName);
+    }
+
+    /**
+     *
+     * @throws Exception
+     */
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        orcs=new Orcs(3,"This is Orcs test");
+
+    }
+
+    /**
+     *
+     * @throws Exception
+     */
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+    }
+
+    /**
+     * This is test get method.
+     */
+    public void testGetType() {
+       Assert.assertEquals(TeamType.ORC_TYPE,orcs.getType());
+    }
+
+    /**
+     * This is test get method.
+     */
+    public void testGetTurns() {
+        //return turns;
+        Assert.assertEquals(0, orcs.getTurns());
+    }
+
+
+
+      /**
+       * This is test get method.
+       */
+      public void testGetLooses() {
+        //return looses;
+        Assert.assertEquals(0, orcs.getLooses());
+
+    }
+
+      /**
+       * This is test get method.
+       */
+      public void testScores() {
+        //return scores;
+        Assert.assertEquals(0,orcs.getScores());
+    }
+
+    /**
+     * This is test get method.
+     */
+    public void testGetWins() {
+        //return wins;
+        Assert.assertEquals(0, orcs.getWins());
+      }
+
+    /**
+     * This is test get method.
+     */
+    public void testGetID()
+    {
+        //return teamID;
+        Assert.assertEquals(3,orcs.getID());
+    }
+
+    /**
+     * This is test get method.
+     */
+    public void testSetID()
+    {
+        orcs.setID(2);
+        Assert.assertEquals(2,orcs.getID());
+        // this.teamID=teamID;
+
+    }
+
+   
+
+    /**
+     * This is test get method.
+     */
+    public void  testGetTotalPlayers()
+    {
+            //return totalPlayers;
+        Assert.assertEquals(0,orcs.getTotalPlayers());
+
+    }
+
+    /**
+     * This is test get method.
+     */
+    public void  testGetName()
+    {
+        //return name;
+        Assert.assertEquals("This is Orcs test", orcs.getName());
+    }
+
+
+
+  /*****************************Player count getters***********************/
+
+
+     /**
+     * This is test get method.
+     */
+    public void testGetMaxBlackorc() {
+
+        Assert.assertEquals(4, orcs.getMaxBlackorc());
+    }
+
+
+    /**
+     *  This is test get method.
+     */
+    public void testGetMaxBlitzer() {
+
+        Assert.assertEquals(4, orcs.getMaxBlitzer());
+      }
+
+    /**
+     * This is test get method.
+     */
+    public void testGetMaxCatcher() {
+        //return maxCatcher;
+        Assert.assertEquals(0, orcs.getMaxCatcher());
+    }
+
+    /**
+     * This is test get method.
+     */
+    public void testGetMaxGoblin() {
+        //return maxGoblin;
+        Assert.assertEquals(4, orcs.getMaxGoblin());
+    }
+
+    /**
+     * This is test get method.
+     */
+    public void testGetMaxLineman() {
+        //return maxLineman;
+        Assert.assertEquals(16, orcs.getMaxLineman());
+    }
+
+    /**
+     * This is test get method.
+     */
+    public void testGetMaxOgre() {
+        //return maxOgre;
+        Assert.assertEquals(0,orcs.getMaxOgre());
+        }
+
+    /**
+     * This is test get method.
+     */
+    public void testGetMaxThrower() {
+        //return maxThrower;
+        Assert.assertEquals(2, orcs.getMaxThrower());
+    }
+
+    /**
+     * This is test get method.
+     */
+    public void testGetMaxTroll() {
+        Assert.assertEquals(1, orcs.getMaxTroll());
+    }
+
+    /**
+     * This is test get method.
+     */
+    public void testGetNumBlackorc() {
+        //return numBlackorc;
+        Assert.assertEquals(0, orcs.getNumBlackorc());
+
+    }
+
+    /**
+     * This is test get method.
+     */
+    public void testGetNumBlitzer() {
+        //return numBlitzer;
+        Assert.assertEquals(0, orcs.getNumBlitzer());
+    }
+
+    /**
+     * This is test get method.
+     */
+    public void testGetNumCatcher() {
+        //return numCatcher;
+        Assert.assertEquals(0,orcs.getNumCatcher());
+    }
+
+    /**
+     * This is test get method.
+     */
+    public void testGetNumGoblin() {
+        //return numGoblin;
+        Assert.assertEquals(0, orcs.getNumGoblin());
+    }
+
+    /**
+     * This is test method turnComplete.
+     */
+    public void testTurnComplete()
+    {
+        int turn=orcs.getTurns()-1;
+        orcs.turnComplete();
+        if(orcs.getTurns()>0)
+          {
+            Assert.assertEquals(turn, orcs.getTurns());
+           }
+        Assert.assertEquals(false,orcs.getPlayerHasMadePass());
+    }
+
+   /**
+    * This is test method of passMade.
+    */
+   public void testPassMade(){
+       orcs.passMade();
+       Assert.assertTrue(orcs.getPlayerHasMadePass());
+    }
+
+    /**
+     * This is the method of test getPassHasMade method.
+     */
+    public void testGetPassHasMade(){
+       orcs.passMade();
+       Assert.assertTrue(orcs.getPlayerHasMadePass());
+     }
+
+    /**
+     * This is the test method of IsValidPlayerAddition.
+     * Since the player has only zero player, thus isValidPlayerAddision
+     * return false value.
+     */
+    public void testIsValidPlayerAddition(){
+      boolean b=orcs.isValidPlayerAddition(PlayerType.BLACKORC);
+      Assert.assertFalse(!b);
+    }
+
+    /**
+     *This is the test method of addPlayer.
+     */
+    public void testAddPlayer(){
+     ElvesBlitzer blitzer=new ElvesBlitzer();
+     orcs.initializePlayers();
+     orcs.addPlayer(blitzer);
+     Assert.assertTrue(orcs.getTotalPlayers()==1);
+    }
+ 
+}

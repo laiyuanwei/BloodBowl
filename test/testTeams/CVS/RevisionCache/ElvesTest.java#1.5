@@ -1,0 +1,243 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package testTeams;
+
+//import bloodbowl.model.players.Blackorc;
+import bloodbowl.model.players.Player;
+import bloodbowl.model.players.Skills;
+import bloodbowl.model.teams.Elves;
+import bloodbowl.model.teams.TeamType;
+import java.util.ArrayList;
+import junit.framework.Assert;
+import junit.framework.TestCase;
+
+/**
+ * This class test Elves class and its relevant methods.
+ * @author Yuanwei Lai
+ */
+public class ElvesTest extends TestCase {
+    private Elves elves=null;
+    ArrayList<Skills> skillsList = new ArrayList<Skills>();
+    ArrayList<Player> player = new ArrayList<Player>();
+
+    /**
+     *
+     * @param testName
+     */
+    public ElvesTest(String testName) {
+        super(testName);
+    }
+
+    /**
+     *
+     * @throws Exception
+     */
+    @Override
+    protected void setUp() throws Exception {
+         super.setUp();
+         elves=new Elves(1,"This is a test");
+        // blackorc=new Blackorc(1,2,3,4,"This is a test",10,skillsList);
+
+    }
+
+    /**
+     *
+     * @throws Exception
+     */
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+    }
+
+    /**
+     * This is test get method.
+     */
+    public void testGetType() {
+       Assert.assertEquals(TeamType.ELF_TYPE,elves.getType());
+    }
+
+
+
+    /**
+     * This is test get method.
+     */
+    public void testGetTurns() {
+        //return turns;
+        Assert.assertEquals(0, elves.getTurns());
+    }
+  
+
+
+    /**
+     * This is test get method.
+     */
+    public void testGetLooses() {
+        //return looses;
+        Assert.assertEquals(0, elves.getLooses());
+        
+    }
+    
+    /**
+     * This is test get method.
+     */
+    public void testScores() {
+        //return scores;
+        Assert.assertEquals(0,elves.getScores());
+    }
+
+    /**
+     * This is test get method.
+     */
+    public void testGetWins() {
+        //return wins;
+        Assert.assertEquals(0, elves.getWins());
+      }
+   
+    /**
+     * This is test get method.
+     */
+    public void testGetID()
+    {
+        //return teamID;
+        Assert.assertEquals(1,elves.getID());
+    }
+
+    /**
+     * This is test get method.
+     */
+    public void testSetID()
+    {
+        elves.setID(2);
+        Assert.assertEquals(2,elves.getID());
+        // this.teamID=teamID;
+
+    }
+
+  
+
+    /**
+     * This is test get method.
+     */
+    public void  testGetTotalPlayers()
+    {
+            //return totalPlayers;
+        Assert.assertEquals(0,elves.getTotalPlayers());
+        
+    }
+    
+    /**
+     * This is test get method.
+     */
+    public void  testGetName()
+    {
+        //return name;
+        Assert.assertEquals("This is a test", elves.getName());
+    }
+  
+
+
+  /*****************************Player count getters***********************/
+
+
+     /**
+     * This is test get method.
+     */
+    
+    public void testGetMaxBlackorc() {
+        
+        Assert.assertEquals(0, elves.getMaxBlackorc());
+    }
+
+ 
+    /**
+     * This is test get method.
+     */
+    public void testGetMaxBlitzer() {
+        
+        Assert.assertEquals(2, elves.getMaxBlitzer());
+      }
+
+    /**
+     * This is test get method.
+     */
+    public void testGetMaxCatcher() {
+        //return maxCatcher;
+        Assert.assertEquals(4, elves.getMaxCatcher());
+    }
+
+    /**
+     * This is test get method.
+     */
+    public void testGetMaxGoblin() {
+        //return maxGoblin;
+        Assert.assertEquals(0, elves.getMaxGoblin());
+    }
+
+    /**
+     * This is test get method.
+     */
+    public void testGetMaxLineman() {
+        //return maxLineman;
+        Assert.assertEquals(16, elves.getMaxLineman());
+    }
+
+    /**
+     * This is test get method.
+     */
+    public void testGetMaxOgre() {
+        //return maxOgre;
+        Assert.assertEquals(0,elves.getMaxOgre());
+        }
+
+    /**
+     * This is test get method.
+     */
+    public void testGetMaxThrower() {
+        //return maxThrower;
+        Assert.assertEquals(2, elves.getMaxThrower());
+    }
+
+    /**
+     * This is test get method.
+     */
+    public void testGetMaxTroll() {
+        Assert.assertEquals(0, elves.getMaxTroll());
+    }
+
+    /**
+     * This is test get method.
+     */
+    public void testGetNumBlackorc() {
+        //return numBlackorc;
+        Assert.assertEquals(0, elves.getNumBlackorc());
+        
+    }
+
+    /**
+     * This is test get method.
+     */
+    public void testGetNumBlitzer() {
+        //return numBlitzer;
+        Assert.assertEquals(0, elves.getNumBlitzer());
+    }
+
+    /**
+     * This is test get method.
+     */
+    public void testGetNumCatcher() {
+        //return numCatcher;
+        Assert.assertEquals(0,elves.getNumCatcher());
+    }
+
+    /**
+     * This is test get method.
+     */
+    public void testGetNumGoblin() {
+        //return numGoblin;
+        Assert.assertEquals(0, elves.getNumGoblin());
+    }
+
+}

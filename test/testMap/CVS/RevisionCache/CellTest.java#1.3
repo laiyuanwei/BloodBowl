@@ -1,0 +1,146 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package testMap;
+
+import bloodbowl.model.map.Cell;
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import junit.framework.Assert;
+import junit.framework.TestCase;
+
+
+/**
+ * Create test methods to the Cell class.
+ * @author Yuanwei Lai
+ */
+public class CellTest extends TestCase {
+
+    private Cell cell=null;
+    
+    /**
+     * The constructor invoked the Super class constructor with using parameter testName.
+     * @param testName
+     */
+    public CellTest(String testName) {
+        super(testName);
+    }
+
+    /**
+     * This setUp() instantiate the instance of Cell class with row=1, column=2
+     * before applied tested case method.
+     * @throws Exception
+     */
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+       // cell=new Cell(1,2);  // row=1, column=2
+    }
+
+    /**
+     * This method ends the CellTest finally.
+     * @throws Exception
+     */
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+    }
+
+    /**
+     * Test of getColumn method, of class Cell.
+     * This method test the cell column.
+     */
+    public void testGetColumn() {
+       Assert.assertEquals(2, cell.getColumn());
+    }
+
+    /**
+     * Test of getRow method, of class Cell.
+     * This method test the cell row.
+     */
+    public void testGetRow() {
+        int expResult = 1;
+        int result = cell.getRow();
+        assertEquals(expResult, result);
+        
+    }
+
+    /**
+     * Test of toString method, of class Cell.
+     * This method test the return coordinate is as expected or not.
+     */
+    public void testToString() {
+        String expResult ="column:" + 2 + " row:" + 1;
+        String result = cell.toString();
+        assertEquals(expResult, result);
+        
+    }
+
+    /**
+     * Test of getZone method, of class Cell.
+     * This method is to test the getZone() return value.
+     */
+    public void testGetZone() {
+        int expResult = 0;
+        int result = cell.getZone();
+        assertEquals(expResult, result);
+        
+    }
+
+    /**
+     * Test of setPlayer method, of class Cell.
+     * This method is to test whether the player can be set to active.
+     */
+    public void testSetPlayer() {
+        cell.setPlayer();
+        Assert.assertEquals(true, cell.hasPlayer());
+    }
+
+    /**
+     * Test of resetPlayer method, of class Cell.
+     * This method test whether the resetPlayer() method will 
+     * reset the player as non-active player or not.
+     */
+    public void testResetPlayer() {
+        cell.resetPlayer();
+        Assert.assertEquals(false, cell.hasPlayer());
+    }
+
+    /**
+     * Test of hasPlayer method, of class Cell.
+     * This method test whether the hasPlayer work or not.
+     */
+    public void testHasPlayer() {
+        boolean expResult = false;
+        boolean result = cell.hasPlayer();
+        assertEquals(expResult, result);
+        
+    }
+
+    /**
+     * Test of printStatus method, of class Cell.
+     * This method test whether the output information is met the require
+     * or not by using the input/output streams to capture the screen output then
+     * compare the capture one to the expected one.
+     */
+    public final void testPrintStatus() {
+      //prepare to capture the output
+      PrintStream originalOutput=System.out;
+      OutputStream os=new ByteArrayOutputStream();
+      PrintStream ps=new PrintStream(os);
+      System.setOut(ps);
+
+      //perform tests
+      cell.printStatus();
+      Assert.assertEquals("Q ",os.toString());
+
+      //restore normal operation
+      System.setOut(originalOutput);
+      
+
+    }
+
+}

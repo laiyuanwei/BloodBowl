@@ -1,0 +1,42 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package testPlayers;
+
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+
+/**
+ *
+ * @author singh
+ */
+public class TesSuitePlayers extends TestCase {
+    
+    
+    public TesSuitePlayers(String testName) {
+        super(testName);
+    }
+
+    public static Test suite() {
+        TestSuite suite = new TestSuite("Tests on Players and Players Factory");
+        //suite.addTestSuite(TestHumanLineman.class);
+        //suite.addTestSuite(TestHumansFactory.class);
+        suite.addTestSuite(testManagers.ActionManagerTest.class);
+        suite.addTestSuite(testManagers.TeamManagerTest.class);
+        return suite;
+    }
+
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+    }
+
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+    }
+
+}

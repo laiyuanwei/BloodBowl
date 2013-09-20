@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- @see LivingRulebook5.pdf --> 
+<teamspec type="elf">
+   <playerspec type="linemen">
+      <minquant>0</minquant>
+      <maxquant>16</maxquant>
+      <movement>6</movement>
+      <strength>3</strength>
+      <agility>4</agility>
+      <armour>7</armour>
+   </playerspec>
+
+   <playerspec type="catcher">
+      <minquant>0</minquant>
+      <maxquant>4</maxquant>
+      <movement>8</movement>
+      <strength>3</strength>
+      <agility>4</agility>
+      <armour>7</armour>
+      <skill>catch</skill>
+      <skill>nerves_of_steel</skill>
+   </playerspec>
+
+   <playerspec type="thrower">
+      <minquant>0</minquant>
+      <maxquant>2</maxquant>
+      <movement>6</movement>
+      <strength>3</strength>
+      <agility>4</agility>
+      <armour>7</armour>
+      <skill>pass</skill>
+   </playerspec>
+   
+   <playerspec type="blitzer">
+      <minquant>0</minquant>
+      <maxquant>2</maxquant>
+      <movement>7</movement>
+      <strength>3</strength>
+      <agility>4</agility>
+      <armour>8</armour>
+      <skill>block</skill>
+      <skill>side_step</skill>
+   </playerspec>
+
+   <playerspec type="orge">
+      <minquant>0</minquant>
+      <maxquant>1</maxquant>
+      <movement>5</movement>
+      <strength>5</strength>
+      <agility>2</agility>
+      <armour>9</armour>
+      <skill>loner</skill>
+      <skill>bone_head</skill>
+      <skill>mighty</skill>
+      <skill>blow</skill>
+      <skill>thick_skull</skill>
+      <skill>throw_team_mate</skill>
+   </playerspec>
+</teamspec>

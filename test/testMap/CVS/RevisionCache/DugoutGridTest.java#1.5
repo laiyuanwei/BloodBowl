@@ -1,0 +1,62 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package testMap;
+
+
+import bloodbowl.model.map.DugoutGrid;
+import junit.framework.Assert;
+import junit.framework.TestCase;
+
+/**
+ * This method is try to test dugout grid class and its relevant function;
+ * @author Yuanwei Lai
+ */
+public class DugoutGridTest extends TestCase {
+    private DugoutGrid dugoutgrid=null;
+ 
+    
+
+    /**
+     * The constructor invoked the Super class constructor with using parameter testName.
+     * @param testName
+     */
+    public DugoutGridTest(String testName) {
+        super(testName);
+    }
+
+    /**
+     * The method instantiate the instance of dugout grid and cell with position
+     * (11,3).
+     * @throws Exception
+     */
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        dugoutgrid=new DugoutGrid();
+       
+    }
+
+    /**
+     * This method ends the testing process.
+     * @throws Exception
+     */
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+    }
+
+
+    /**
+     * Test of getCell method, of class DugoutGrid.
+     * This method test the getCell() method, which return the one of position
+     * the cell.
+     */
+    public void testGetCell() {
+       Assert.assertEquals(3, dugoutgrid.getCell(11,3).getColumn());
+       Assert.assertEquals(11,dugoutgrid.getCell(11, 3).getRow());
+    }
+
+}

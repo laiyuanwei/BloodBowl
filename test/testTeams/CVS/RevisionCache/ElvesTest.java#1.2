@@ -1,0 +1,191 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package testTeams;
+
+//import bloodbowl.model.players.Blackorc;
+import bloodbowl.model.players.Player;
+import bloodbowl.model.players.Skills;
+import bloodbowl.model.teams.Elves;
+import bloodbowl.model.teams.TeamType;
+import java.util.ArrayList;
+import junit.framework.Assert;
+import junit.framework.TestCase;
+
+/**
+ *
+ * @author Yuanwei Lai
+ */
+public class ElvesTest extends TestCase {
+    private Elves elves=null;
+    //private Blackorc blackorc=null;
+    ArrayList<Skills> skillsList = new ArrayList<Skills>();
+    ArrayList<Player> player = new ArrayList<Player>();
+
+    public ElvesTest(String testName) {
+        super(testName);
+    }
+
+    @Override
+    protected void setUp() throws Exception {
+         super.setUp();
+         elves=new Elves(1,"This is a test");
+        // blackorc=new Blackorc(1,2,3,4,"This is a test",10,skillsList);
+
+    }
+
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+    }
+
+   public void testGetType() {
+       Assert.assertEquals(TeamType.ELF_TYPE,elves.getType());
+    }
+
+
+
+   /*public void testGetPlayers()
+    {
+        //return pList;
+       elves.add(elves.getPlayers());
+       Assert.assertEquals(blackorc.getName(), elves.getPlayers().get(0).getName());
+    }
+   
+
+
+   public void testGetAvailablePlayerOptions()
+    {
+      Assert.assertEquals("Blitzer", elves.getAvailablePlayerOptions());
+    //return typeOfAvailablePlayers;
+       
+    }
+    
+*/
+   
+
+    public void testGetTurns() {
+        //return turns;
+        Assert.assertEquals(0, elves.getTurns());
+    }
+  
+
+
+    public void testGetLooses() {
+        //return looses;
+        Assert.assertEquals(0, elves.getLooses());
+        
+    }
+    
+    public void testScores() {
+        //return scores;
+        Assert.assertEquals(0,elves.getScores());
+    }
+
+    public void testGetWins() {
+        //return wins;
+        Assert.assertEquals(0, elves.getWins());
+      }
+   
+    public void testGetID()
+    {
+        //return teamID;
+        Assert.assertEquals(1,elves.getID());
+    }
+
+    public void testSetID()
+    {
+        elves.setID(2);
+        Assert.assertEquals(2,elves.getID());
+        // this.teamID=teamID;
+
+    }
+
+   /* public Player getPlayer(int i)
+    {
+            return pList.get(i);
+    }
+
+   */
+
+    public void  testGetTotalPlayers()
+    {
+            //return totalPlayers;
+        Assert.assertEquals(0,elves.getTotalPlayers());
+        
+    }
+    
+    public void  testGetName()
+    {
+        //return name;
+        Assert.assertEquals("This is a test", elves.getName());
+    }
+  
+
+
+  /*****************************Player count getters***********************/
+
+    public void testGetMaxBlackorc() {
+        
+        Assert.assertEquals(0, elves.getMaxBlackorc());
+    }
+
+ 
+    public void testGetMaxBlitzer() {
+        
+        Assert.assertEquals(2, elves.getMaxBlitzer());
+      }
+
+    public void testGetMaxCatcher() {
+        //return maxCatcher;
+        Assert.assertEquals(4, elves.getMaxCatcher());
+    }
+
+    public void testGetMaxGoblin() {
+        //return maxGoblin;
+        Assert.assertEquals(0, elves.getMaxGoblin());
+    }
+
+    public void testGetMaxLineman() {
+        //return maxLineman;
+        Assert.assertEquals(16, elves.getMaxLineman());
+    }
+
+    public void testGetMaxOgre() {
+        //return maxOgre;
+        Assert.assertEquals(0,elves.getMaxOgre());
+        }
+
+    public void testGetMaxThrower() {
+        //return maxThrower;
+        Assert.assertEquals(2, elves.getMaxThrower());
+    }
+
+    public void testGetMaxTroll() {
+        Assert.assertEquals(0, elves.getMaxTroll());
+    }
+
+    public void testGetNumBlackorc() {
+        //return numBlackorc;
+        Assert.assertEquals(0, elves.getNumBlackorc());
+        
+    }
+
+    public void testGetNumBlitzer() {
+        //return numBlitzer;
+        Assert.assertEquals(0, elves.getNumBlitzer());
+    }
+
+    public void testGetNumCatcher() {
+        //return numCatcher;
+        Assert.assertEquals(0,elves.getNumCatcher());
+    }
+
+    public void testGetNumGoblin() {
+        //return numGoblin;
+        Assert.assertEquals(0, elves.getNumGoblin());
+    }
+
+}

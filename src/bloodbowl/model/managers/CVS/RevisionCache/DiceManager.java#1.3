@@ -1,0 +1,55 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package bloodbowl.model.managers;
+
+import java.util.Random;
+
+/**
+ * This class manages the various types of dice rolls.
+ * For example, if you need a D6 roll, you can call the method rollD6().
+ * This method will return a random value from 1-6.
+ * Similarly there are other methods for other dice types.
+ * @author Rishinder
+ */
+public final class DiceManager {
+
+    private static Random randomiser=new Random();
+    /**
+     * Method for a D6 roll
+     * @return Random number between 1 and 6
+     */
+    public static int rollD6()
+    {
+        return (int) Math.random()*6+1;
+    }
+
+    /**
+     * Method for two D6 rolls
+     * @return Random number between 1 and 12
+     */
+    public static int roll2D6()
+    {
+        return (int) Math.random()*12+1;
+    }
+
+    /**
+     * Method for a D3 roll
+     * @return Random number between 1 and 3
+     */
+    public static int rollD3()
+    {
+        return (int) Math.random()*3+1;
+    }
+
+    /**
+     * Method for a D8 roll
+     * @return Random number between 1 and 8
+     */
+    public static int rollD8()
+    {
+        return randomiser.nextInt(8);
+    }
+}

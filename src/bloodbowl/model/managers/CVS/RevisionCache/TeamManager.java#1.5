@@ -1,0 +1,73 @@
+package bloodbowl.model.managers;
+import bloodbowl.model.players.*;
+import bloodbowl.model.teams.Team;
+import bloodbowl.model.teams.Elves;
+import bloodbowl.model.teams.Humans;
+import bloodbowl.model.teams.Orcs;
+
+public class TeamManager {
+    Team currentTeam;
+    public void createTeam(int teamID,int teamType, String teamName)
+    {
+        if(teamType==Team.HUMAN_TYPE)
+            currentTeam= new Humans(teamID,teamName);
+        else if(teamType==Team.ELF_TYPE)
+            currentTeam= new Elves(teamID,teamName);
+        else if(teamType==Team.ORC_TYPE)
+            currentTeam= new Orcs(teamID,teamName);
+    }
+    public boolean createPlayer(int playerType)
+    {
+        Player newPlayer=null;
+        String defaultName;
+
+        if(currentTeam.isValidPlayerAddition(playerType))
+        {
+            defaultName="Player"+(currentTeam.getTotalPlayers()+1);
+            if(playerType==Player.BLACKORC)
+            {
+                newPlayer=new Blackorc(currentTeam.getBlackorcMA(),currentTeam.getBlackorcST(),currentTeam.getBlackorcAG(),currentTeam.getBlackorcAV(),defaultName,currentTeam.getID(),currentTeam.getBlackorcSkills());
+            }
+            else if(playerType==Player.BLITZER)
+            {
+                newPlayer=new Blitzer(currentTeam.getBlitzerMA(),currentTeam.getBlitzerST(),currentTeam.getBlitzerAG(),currentTeam.getBlitzerAV(),defaultName,currentTeam.getID(),currentTeam.getBlitzerSkills());
+            }
+            else if(playerType==Player.CATCHER)
+            {
+                newPlayer=new Catcher(currentTeam.getCatcherMA(),currentTeam.getCatcherST(),currentTeam.getCatcherAG(),currentTeam.getCatcherAV(),defaultName,currentTeam.getID(),currentTeam.getCatcherSkills());
+            }
+            else if(playerType==Player.GOBLIN)
+            {
+                newPlayer=new Goblin(currentTeam.getGoblinMA(),currentTeam.getGoblinST(),currentTeam.getGoblinAG(),currentTeam.getGoblinAV(),defaultName,currentTeam.getID(),currentTeam.getGoblinSkills());
+            }
+            else if(playerType==Player.LINEMAN)
+            {
+                newPlayer=new Lineman(currentTeam.getLinemanMA(),currentTeam.getLinemanST(),currentTeam.getLinemanAG(),currentTeam.getLinemanAV(),defaultName,currentTeam.getID(),currentTeam.getLinemanSkills());
+            }
+            else if(playerType==Player.OGRE)
+            {
+                newPlayer=new Ogre(currentTeam.getOgreMA(),currentTeam.getOgreST(),currentTeam.getOgreAG(),currentTeam.getOgreAV(),defaultName,currentTeam.getID(),currentTeam.getOgreSkills());
+            }
+            else if(playerType==Player.THROWER)
+            {
+                newPlayer=new Thrower(currentTeam.getThrowerMA(),currentTeam.getThrowerST(),currentTeam.getThrowerAG(),currentTeam.getThrowerAV(),defaultName,currentTeam.getID(),currentTeam.getThrowerSkills());
+            }
+            else if(playerType==Player.TROLL)
+            {
+                newPlayer=new Troll(currentTeam.getTrollMA(),currentTeam.getTrollST(),currentTeam.getTrollAG(),currentTeam.getTrollAV(),defaultName,currentTeam.getID(),currentTeam.getTrollSkills());
+            }
+            currentTeam.addPlayer(newPlayer);
+            return true;
+        }
+        return false;
+    }
+    
+    public void setTeam(Team teamFromGame)
+    {
+        currentTeam=teamFromGame;
+    }
+    public Team getTeam()
+    {
+        return currentTeam;
+    }
+}

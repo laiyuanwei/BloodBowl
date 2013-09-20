@@ -1,0 +1,229 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package testPlayers;
+
+import bloodbowl.model.map.Cell;
+import bloodbowl.model.players.OrcBlackorc;
+import bloodbowl.model.players.PlayerType;
+import bloodbowl.model.players.Skills;
+import junit.framework.Assert;
+import junit.framework.TestCase;
+
+import java.util.ArrayList;
+
+
+/**
+ * This class test OrcBlackorc class and its relevant methods.
+ * @author Yuanwei Lai
+ */
+public class OrcBlackorcTest extends TestCase {
+    ArrayList<Skills> skillsList = new ArrayList<Skills>();
+    private OrcBlackorc blackorc=null;
+    //private OrcBlackorc orcBlackorc=null;
+    private Cell cell=null;
+    private Cell newcell=null;
+    private Cell clickedCell=null;
+    private Cell location=null;
+
+    
+    /**
+     * The constructor invoked the Super class constructor with using parameter testName.
+     * @param testName
+     */
+    public OrcBlackorcTest(String testName) {
+        super(testName);
+    }
+
+    /**
+     * This method instantiate the instance that needed in the test cases for the
+     * following test method purpose.
+     * @throws Exception
+     */
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        //blackorc=new Blackorc(1,2,3,4,10,skillsList,PlayerType.BLACKORC);
+        blackorc =new OrcBlackorc();
+        cell=new Cell(1,2);
+        newcell=new  Cell(1,2);
+       
+    }
+    
+    /**
+     * ThiS method is to end the test process.
+     * @throws Exception
+     */
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+    }
+
+    // TODO add test methods here. The name must begin with 'test'. For example:
+    // public void testHello() {}
+
+    /**
+     * This method test set method of movement left.
+     */
+    public void testResetMovementLeft(){
+       blackorc.resetMovementLeft();
+       Assert.assertEquals(4, blackorc.getMa());
+    }
+
+    /**
+     * This method test the  MA value.
+     */
+    public void testGetMaLeft(){
+       Assert.assertEquals(4, blackorc.getMa());
+    }
+
+    /**
+     * This method test the decrease move method, and examine the maLeft value.
+     */
+    public void testDecreaseMovementLeft()
+    {
+        blackorc.decreaseMovementLeft();
+        Assert.assertEquals(3, blackorc.getMa()-1);
+        //maLeft--;
+    }
+    /**
+     * This method test the whether player can moved or not.
+     */
+    public void testCanMove()
+    {
+        boolean expected;
+        if(blackorc.getMa()>0)
+            expected=true;
+        else
+            expected=false;
+       Assert.assertEquals(false,blackorc.canMove());
+    }
+   /**
+    * This method test the set team id method.
+    */
+   public void testSetTeamID()
+    {
+        blackorc.setTeamID(5);
+        Assert.assertEquals(5,blackorc.getTeamID());
+        
+        
+    }
+
+   /**
+    * This method test the get team id method.
+    */
+   public void  testGetTeamID()
+    {
+        
+        Assert.assertEquals(0, blackorc.getTeamID());
+        //return teamID;
+    }
+   /**
+    * This method test the set location method.
+    */
+   public void testSetLocation()  //Method for relocation during gameplay
+    {
+        cell.resetPlayer();
+        //cell = (PitchCell) newcell;
+        cell.setPlayer();
+        newcell.setPlayer();
+        blackorc.setActive();
+        //blackorc.setChanged();
+        Assert.assertEquals(true, cell.hasPlayer());
+        Assert.assertEquals(true,newcell.hasPlayer());
+
+
+    }
+
+    /**
+     * This method test the setup on location method.
+     */
+    public void testSetUpOnLocation() //Method for setting location at game start
+    {
+          newcell.setPlayer();
+          cell=newcell;
+          blackorc.setActive();
+          Assert.assertEquals(true, cell.hasPlayer());
+          Assert.assertEquals(true, newcell.hasPlayer());
+          Assert.assertEquals(true, blackorc.getActive());
+     }
+    /**
+     * This method test the get location method.
+     */
+    public void testGetLocation()
+    {
+        
+        Assert.assertEquals(1,cell.getRow());
+        Assert.assertEquals(2,cell.getColumn());
+        Assert.assertEquals(0,cell.getZone());
+        Assert.assertEquals(false,cell.hasPlayer());
+
+        }
+
+
+    /**
+     * This method test whether the statue can be set or not.
+     */
+    public void testSetActive() {
+        //this.isActive = true;
+        blackorc.setActive();
+        Assert.assertEquals(true, blackorc.getActive());
+        //setChanged();
+        //notifyObservers();
+    }
+
+
+    /**
+     * This method is test whether the get status method can work or not.
+     */
+    public void testGetActive() {
+       // return isActive;
+      Assert.assertEquals(false,blackorc.getActive());
+    }
+
+
+    /**
+     *  This method is test whether the MA value can be retrieve or not.
+     */
+    public void testGetMa() {
+        //return ma;
+        Assert.assertEquals(4, blackorc.getMa());
+       
+    }
+
+  
+    /**
+     * This method is test whether the get method of ST is work or not.
+     */
+    public void testGetSt() {
+        //return st;
+        Assert.assertEquals(4, blackorc.getSt());
+    }
+
+    /**
+     * This method is test whether the get method of AV is work or not.
+     */
+    public void testGetAv() {
+        //return av;
+        Assert.assertEquals(9, blackorc.getAv());
+    }
+
+    /**
+     * This method is test whether the hasMoved() is work or not.
+     */
+    public void testHasMoved(){
+        //return hasMoved;
+        Assert.assertEquals(false,blackorc.hasMoved());
+    }
+
+    /**
+     * This method is test whether the get method of AG is work or not.
+     */
+    public void testGetAg() {
+        Assert.assertEquals(2, blackorc.getAg());
+    }
+
+
+}

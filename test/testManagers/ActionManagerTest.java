@@ -1,0 +1,82 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package testManagers;
+
+import bloodbowl.engine.Game;
+import bloodbowl.model.map.PitchGrid;
+import bloodbowl.model.managers.ActionManager;
+import bloodbowl.model.players.HumanLineman;
+import junit.framework.Assert;
+import junit.framework.TestCase;
+
+/**
+ * Create test methods for the ActionManager class.
+ * @author Yuanwei Lai
+ */
+public class ActionManagerTest extends TestCase {
+    private ActionManager actionManager=null;
+    private Game game=null;
+    PitchGrid pitch=null;
+    HumanLineman selectedPlayer=null;
+    
+    /**
+     * The constructor invoked the Super class constructor with using parameter testName.
+     * @param testName
+     */
+    public ActionManagerTest(String testName) {
+        super(testName);
+    }
+
+    /**
+     * The setUp() method instantiate an instance of ActionManager and PitchGrid.
+     * 
+     * @throws Exception
+     */
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        
+        actionManager=new ActionManager();
+        
+       pitch=new PitchGrid();
+       selectedPlayer=new HumanLineman();
+    }
+
+    /**
+     *
+     * @throws Exception
+     */
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+    }
+
+   
+    /**
+     * Test of moveSelectedPlayerAt method, of class ActionManager.
+     * This method evaluate whether user can move the player to the destination
+     * cell or not.
+     */
+    public void testMoveSelectedPlayerAt() {
+
+       
+        Assert.assertEquals(false,actionManager.moveSelectedPlayerAt(pitch.getCell(3,3)));
+        Assert.assertEquals(false,actionManager.moveSelectedPlayerAt(pitch.getCell(3,4)));
+        Assert.assertEquals(false,actionManager.moveSelectedPlayerAt(pitch.getCell(4,4)));
+        Assert.assertEquals(false,actionManager.moveSelectedPlayerAt(pitch.getCell(5,4)));
+    }
+
+    /**
+     * Test of the status of kickoff.
+     */
+    public void testIsKickedOff(){
+       Assert.assertEquals(false,actionManager.IsKickedOff());
+       
+    }
+
+   
+
+}

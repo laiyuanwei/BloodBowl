@@ -1,0 +1,114 @@
+package bloodbowl.model.managers;
+
+import bloodbowl.engine.Game;
+import bloodbowl.model.players.*;
+import bloodbowl.model.teams.Team;
+import bloodbowl.model.teams.Elves;
+import bloodbowl.model.teams.Humans;
+import bloodbowl.model.teams.Orcs;
+import bloodbowl.model.teams.TeamType;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+public class TeamManager {
+
+    Team currentTeam;
+
+    public void createTeam(int teamID, TeamType teamType, String teamName) {
+        if (teamType == TeamType.HUMAN_TYPE) {
+            currentTeam = new Humans(teamID, teamName);
+        } else if (teamType == TeamType.ELF_TYPE) {
+            currentTeam = new Elves(teamID, teamName);
+        } else if (teamType == TeamType.ORC_TYPE) {
+            currentTeam = new Orcs(teamID, teamName);
+        }
+    }
+
+    public boolean createPlayer(PlayerType playerType) {
+        Player newPlayer = null;
+        String defaultName;
+
+        if (currentTeam.isValidPlayerAddition(playerType)) {
+
+            if (playerType == PlayerType.BLACKORC) {
+                
+                newPlayer = new Blackorc(currentTeam.getBlackorcMA(), currentTeam.getBlackorcST(), currentTeam.getBlackorcAG(), currentTeam.getBlackorcAV(), currentTeam.getID(), currentTeam.getBlackorcSkills(), playerType);
+            } else if (playerType == PlayerType.BLITZER) {
+                
+                newPlayer = new Blitzer(currentTeam.getBlitzerMA(), currentTeam.getBlitzerST(), currentTeam.getBlitzerAG(), currentTeam.getBlitzerAV(), currentTeam.getID(), currentTeam.getBlitzerSkills(), playerType);
+            } else if (playerType == PlayerType.CATCHER) {
+                
+                newPlayer = new Catcher(currentTeam.getCatcherMA(), currentTeam.getCatcherST(), currentTeam.getCatcherAG(), currentTeam.getCatcherAV(), currentTeam.getID(), currentTeam.getCatcherSkills(), playerType);
+            } else if (playerType == PlayerType.GOBLIN) {
+                
+                newPlayer = new Goblin(currentTeam.getGoblinMA(), currentTeam.getGoblinST(), currentTeam.getGoblinAG(), currentTeam.getGoblinAV(), currentTeam.getID(), currentTeam.getGoblinSkills(), playerType);
+            } else if (playerType == PlayerType.LINEMAN) {
+                
+                newPlayer = new Lineman(currentTeam.getLinemanMA(), currentTeam.getLinemanST(), currentTeam.getLinemanAG(), currentTeam.getLinemanAV(), currentTeam.getID(), currentTeam.getLinemanSkills(), playerType);
+            } else if (playerType == PlayerType.OGRE) {
+                
+                newPlayer = new Ogre(currentTeam.getOgreMA(), currentTeam.getOgreST(), currentTeam.getOgreAG(), currentTeam.getOgreAV(), currentTeam.getID(), currentTeam.getOgreSkills(), playerType);
+            } else if (playerType == PlayerType.THROWER) {
+                
+                newPlayer = new Thrower(currentTeam.getThrowerMA(), currentTeam.getThrowerST(), currentTeam.getThrowerAG(), currentTeam.getThrowerAV(), currentTeam.getID(), currentTeam.getThrowerSkills(), playerType);
+            } else if (playerType == PlayerType.TROLL) {
+                
+                newPlayer = new Troll(currentTeam.getTrollMA(), currentTeam.getTrollST(), currentTeam.getTrollAG(), currentTeam.getTrollAV(), currentTeam.getID(), currentTeam.getTrollSkills(), playerType);
+            }
+            currentTeam.addPlayer(newPlayer);
+            return true;
+        }
+        return false;
+    }
+
+    public void setTeam(Team teamFromGame) {
+        currentTeam = teamFromGame;
+    }
+
+    public Team getTeam() {
+        return currentTeam;
+    }
+
+    public void saveTeam() throws FileNotFoundException, IOException {
+
+        String filename = "SavedTeams/"+currentTeam.getName().toLowerCase();
+
+        FileOutputStream fos = null;
+        ObjectOutputStream out = null;
+        
+        fos = new FileOutputStream(filename);
+        out = new ObjectOutputStream(fos);
+        out.writeObject(currentTeam);
+        out.close();
+    }
+
+    public ArrayList<String> getSavedTeams()
+    {
+        File savedTeams=new File("SavedTeams");
+        //System.out.println("Entered Method" + savedTeams.getAbsolutePath());
+        ArrayList<String> teamNames=new ArrayList(Arrays.asList(savedTeams.list()));
+        teamNames.remove("CVS");
+        return teamNames;
+    }
+
+    public void restoreTeam(String teamName) throws IOException, ClassNotFoundException {
+        
+        String filename = "SavedTeams/"+teamName;
+        FileInputStream fis = null;
+        ObjectInputStream in = null;
+
+        fis = new FileInputStream(filename);
+        in = new ObjectInputStream(fis);
+        currentTeam = (Team) in.readObject();
+        in.close();
+    }
+}

@@ -1,0 +1,40 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package bloodbowl.gui.map;
+
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import javax.swing.ImageIcon;
+import javax.swing.UIManager;
+
+/**
+ *
+ * @author mavencode
+ */
+public class Utility {
+
+    public static BufferedImage imageScale(ImageIcon src, int w, int h) {
+        int type = BufferedImage.TYPE_INT_RGB;
+        BufferedImage dst = new BufferedImage(w, h, type);
+        Graphics2D g2 = dst.createGraphics();
+        // Fill background for scale to fit.
+        g2.setBackground(UIManager.getColor("Panel.background"));
+        g2.clearRect(0, 0, w, h);
+        double xScale = (double) w / src.getIconWidth();
+        double yScale = (double) h / src.getIconHeight();
+        // Scaling options:
+        // Scale to fit - image just fits in label.
+        double scale = Math.max(xScale, yScale);
+        // Scale to fill - image just fills label.
+        //double scale = Math.max(xScale, yScale);
+        int width = (int) (scale * src.getIconWidth());
+        int height = (int) (scale * src.getIconHeight());
+        int x = (w - width) / 2;
+        int y = (h - height) / 2;
+        g2.drawImage(src.getImage(), x, y, width, height, null);
+        g2.dispose();
+        return dst;
+    }
+}

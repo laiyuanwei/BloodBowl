@@ -1,0 +1,73 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package bloodbowl.model.managers;
+
+/**
+ *
+ * @author singh
+ */
+import bloodbowl.engine.Game;
+import bloodbowl.model.map.Cell;
+import bloodbowl.model.players.Player;
+
+public class ActionManager {
+
+    Game game;
+    Player selectedPlayer;
+    int opponentsInfluence;
+
+    public ActionManager() {
+        opponentsInfluence = 0;
+    }
+
+    //ActionManager informs the Game about the action initiation
+    public void initiateMoveAction(Game newGameState) {
+        game = newGameState;
+        selectedPlayer = game.getSelectedPlayer();
+        game.initiateMoveAction();
+    }
+
+    //ActionManager informs the Game about the action completion
+    public void commitMove() {
+        selectedPlayer = null;
+        game.commitMoveAction();
+        game = null;
+    }
+
+    //Method to check if the player is tackled by an opponent
+    public void refreshOpponentsInfluence() {
+         int totalOpponents = (game.getOpponentTeam()).getTotalPlayers();
+        for (int i = 0; i < totalOpponents; i++) {
+            if ((((game.getOpponentTeam()).getPlayer(i))).getActive()) {
+                if (((game.getOpponentTeam()).getPlayer(i)).isNear(selectedPlayer.getLocation())) {
+                    opponentsInfluence++;
+                }
+            }
+        }
+    }
+
+    //Main action for moving the players
+    public boolean moveSelectedPlayerAt(Cell destinationCell) {
+        boolean playerMoved = false;
+        //Remove the turn condition for build 1
+        //&& selectedPlayer.getTeamID()==game.getCurrentTeam()
+        if (selectedPlayer != null && selectedPlayer.isNear(destinationCell)
+                && selectedPlayer.getActive() && game.isWaitingForMoveAction()
+                && selectedPlayer.canMove() && !destinationCell.hasPlayer()) {
+            
+        
+            selectedPlayer.setLocation(destinationCell);
+            selectedPlayer.decreaseMovementLeft();
+            System.out.println("the player has moved");
+            game.drawMap();
+            playerMoved = true;
+        } else {
+            System.out.println("Invalid move");
+            playerMoved = false;
+        }
+
+        return playerMoved;
+    }
+}

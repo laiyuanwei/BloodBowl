@@ -1,0 +1,98 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package bloodbowl.gui.map;
+
+import bloodbowl.engine.Game;
+import bloodbowl.model.map.DugoutCell;
+import bloodbowl.model.players.Player;
+import bloodbowl.model.teams.Team;
+import javax.swing.JComponent;
+import javax.swing.JTable;
+import javax.swing.TransferHandler;
+
+/**
+ *
+ * @author mavencode
+ */
+public class PlayersTransferHandler extends TransferHandler {
+
+    private JTable source;
+    private GameGrid target;
+    private Team team;
+    private int row;
+    private int column;
+    private Player player;
+    private Game gameEngine;
+
+    PlayersTransferHandler(JTable source, Team team) {
+        super();
+
+        this.source = source;
+        this.team = team;
+
+        gameEngine = Game.getInstance();
+
+    }
+
+    @Override
+    public int getSourceActions(JComponent c) {
+        return COPY_OR_MOVE;
+    }
+
+    @Override
+    public boolean importData(TransferSupport info) {
+
+        row = source.getSelectedRow();
+        column = source.getSelectedColumn();
+        target = (GameGrid) info.getComponent();
+
+        JTable.DropLocation dl = (JTable.DropLocation) info.getDropLocation();
+
+        if (team.getID() == 1) {
+            System.out.println("...dugout1");
+            gameEngine.getPlayerAtDugoutA(row, column);
+            gameEngine.placePlayerAtPitchCell(dl.getRow(), dl.getColumn());
+
+        } else {
+            System.out.println("...dugout2");
+            gameEngine.getPlayerAtDugoutB(row, column);
+            gameEngine.placePlayerAtPitchCell(dl.getRow(), dl.getColumn());
+        }
+        DugoutCell dcell = (DugoutCell) source.getValueAt(row, column);
+        dcell.resetPlayer();
+
+        source.repaint();
+        target.repaint();
+
+        return super.importData(info);
+    }
+
+    @Override
+    public boolean canImport(TransferHandler.TransferSupport support) {
+
+        row = source.getSelectedRow();
+        column = source.getSelectedColumn();
+        Player p = getPlayerAt(row, column);
+//
+//        if (p == null) {
+//            return false;
+//        } else {
+//            return true;
+//        }
+//
+        return true;
+    }
+
+    public Player getPlayerAt(int row, int column) {
+        for (Player p : team.getPlayers()) {
+            if (p.getLocation().getRow() == row && p.getLocation().getColumn() == column) {
+                player = p;
+                System.out.println("Player found : " + p.getLocation());
+                break;
+            }
+        }
+        return player;
+    }
+}

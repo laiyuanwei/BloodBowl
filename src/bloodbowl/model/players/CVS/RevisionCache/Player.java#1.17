@@ -1,0 +1,179 @@
+package bloodbowl.model.players;
+
+import bloodbowl.model.map.Cell;
+import bloodbowl.model.map.PitchCell;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Observable;
+
+public abstract class Player extends Observable implements Serializable {
+
+    int ma, st, ag, av;     //ma=Movement Allowance, st=Strength, ag=Agility, av=Armor Value
+    int maLeft;             //Movement allowance left after a move
+    int teamID;             //For Team A, teamID=1. For Team B, teamID=2;
+    transient Cell location;          //Location in the Map (pitch or the dugout)
+    boolean isActive;       //Player is on pitch
+    boolean isInjured;      //Player is in injured zone
+    boolean isKnockedOut;   //Player is in knowcked out zone
+    boolean hasMoved;       //Player has made its move in the turn
+    
+    ArrayList<Skills> skillsList;
+    PlayerType type;               //Stores player type
+
+    public Player()
+    {
+        
+    }
+
+    public Player(int ma, int st, int ag, int av,  int teamID, ArrayList<Skills> skills, PlayerType type) {
+        this.ma = ma;
+        this.st = st;
+        this.ag = ag;
+        this.av = av;
+        this.teamID = teamID;
+        this.type=type;
+        skillsList = skills;
+        maLeft = ma;
+    }
+
+    public void setTeamId(int teamID)
+    {
+        this.teamID=teamID;
+    }
+
+    public void resetMovementLeft() {
+        maLeft = ma;
+    }
+
+    public void decreaseMovementLeft() {
+        maLeft--;
+    }
+
+    public boolean canMove() {
+        if (maLeft > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void setTeamID(int id) {
+        teamID = id;
+    }
+
+    public int getTeamID() {
+        return teamID;
+    }
+
+    public void setLocation(Cell newLocation) //Method for relocation during gameplay
+    {
+        location.resetPlayer();
+        //newLocation.setPlayer();        //Inform cell that it has something
+        location = (PitchCell) newLocation;
+        location.setPlayer();
+        setActive();
+        
+        setChanged();
+        notifyObservers();
+    }
+
+    public void setUpOnLocation(Cell setUpLocation) //Method for setting location at game start
+    {
+        setUpLocation.setPlayer();      //Inform cell that it has something
+        location = setUpLocation;         //Assign player to the respective cell
+        isActive = false;                  //Make the player active
+
+        setChanged();
+        notifyObservers();
+
+    }
+
+    public Cell getLocation() {
+        return location;
+    }
+
+    public boolean isNear(Cell clickedCell) {
+        boolean isNearVar = false;
+        if (clickedCell.getRow() == location.getRow() - 1 && clickedCell.getColumn() == location.getColumn() - 1) {
+            isNearVar = true;
+        } else if (clickedCell.getRow() == location.getRow() - 1 && clickedCell.getColumn() == location.getColumn()) {
+            isNearVar = true;
+        } else if (clickedCell.getRow() == location.getRow() - 1 && clickedCell.getColumn() == location.getColumn() + 1) {
+            isNearVar = true;
+        } else if (clickedCell.getRow() == location.getRow() + 1 && clickedCell.getColumn() == location.getColumn() - 1) {
+            isNearVar = true;
+        } else if (clickedCell.getRow() == location.getRow() + 1 && clickedCell.getColumn() == location.getColumn()) {
+            isNearVar = true;
+        } else if (clickedCell.getRow() == location.getRow() + 1 && clickedCell.getColumn() == location.getColumn() + 1) {
+            isNearVar = true;
+        } else if (clickedCell.getRow() == location.getRow() && clickedCell.getColumn() == location.getColumn() - 1) {
+            isNearVar = true;
+        } else if (clickedCell.getRow() == location.getRow() && clickedCell.getColumn() == location.getColumn() + 1) {
+            isNearVar = true;
+        }
+
+        return isNearVar;
+    }
+
+    public void setActive() {
+        this.isActive = true;
+
+        setChanged();
+        notifyObservers();
+    }
+
+    public boolean getActive() {
+        return isActive;
+    }
+
+    public PlayerType getType() {
+        return type;
+    }
+
+    public int getMa() {
+        return ma;
+    }
+
+    public int getSt() {
+        return st;
+    }
+
+    public int getAv() {
+        return av;
+    }
+
+    public void setAg(int ag) {
+        this.ag = ag;
+    }
+
+    public void setAv(int av) {
+        this.av = av;
+    }
+
+    public void setMa(int ma) {
+        this.ma = ma;
+    }
+
+    public void setSkillsList(ArrayList<Skills> skillsList) {
+        this.skillsList = skillsList;
+    }
+
+    public ArrayList<Skills> getSkillsList() {
+        return skillsList;
+    }
+
+    public void setSt(int st) {
+        this.st = st;
+    }
+
+
+    public boolean hasMoved() {
+        return hasMoved;
+    }
+
+    public int getAg() {
+        return ag;
+    }
+
+}

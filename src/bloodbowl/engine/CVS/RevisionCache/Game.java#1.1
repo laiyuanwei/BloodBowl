@@ -1,0 +1,19 @@
+
+package bloodbowl.engine;
+
+import java.util.Random;
+
+public class Game {
+
+    private static Random randToss;
+
+    public static boolean tossCoin(boolean isHead) {
+        randToss = new Random();
+        boolean outcome = randToss.nextBoolean();
+        if (outcome) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}

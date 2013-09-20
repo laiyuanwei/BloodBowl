@@ -1,0 +1,190 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package testPlayers;
+
+import bloodbowl.model.map.Cell;
+import bloodbowl.model.players.Blackorc;
+import bloodbowl.model.players.PlayerType;
+import bloodbowl.model.players.Skills;
+import junit.framework.Assert;
+import junit.framework.TestCase;
+
+import java.util.ArrayList;
+
+
+/**
+ *
+ * @author Yuanwei Lai
+ */
+public class BlackorcTest extends TestCase {
+    ArrayList<Skills> skillsList = new ArrayList<Skills>();
+    private Blackorc blackorc=null;
+    private Cell cell=null;
+    private Cell newcell=null;
+    private Cell clickedCell=null;
+    private Cell location=null;
+
+    
+    public BlackorcTest(String testName) {
+        super(testName);
+    }
+
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+       // skill=Skills.PASS;
+        blackorc=new Blackorc(1,2,3,4,"Test blackorc",10,skillsList,PlayerType.BLACKORC);
+        cell=new Cell(1,2);
+        newcell=new  Cell(1,2);
+       // location=new Cell(1,2);
+       // clickedCell=new Cell(3,4);
+    }
+    
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+    }
+
+    // TODO add test methods here. The name must begin with 'test'. For example:
+    // public void testHello() {}
+
+    public void testResetMovementLeft(){
+       blackorc.resetMovementLeft();
+       Assert.assertEquals(1, blackorc.getMa());
+    }
+
+    public void testGetMaLeft(){
+       Assert.assertEquals(1, blackorc.getMa());
+    }
+
+    public void testDecreaseMovementLeft()
+    {
+        blackorc.decreaseMovementLeft();
+        Assert.assertEquals(0, blackorc.getMa()-1);
+        //maLeft--;
+    }
+   public void testCanMove()
+    {
+        boolean expected;
+        if(blackorc.getMa()>0)
+            expected=true;
+        else
+            expected=false;
+       Assert.assertEquals(expected,blackorc.canMove());
+    }
+    public void testSetTeamID()
+    {
+        blackorc.setTeamID(5);
+        Assert.assertEquals(5,blackorc.getTeamID());
+        
+        //teamID=id;
+    }
+
+    public void  testGetTeamID()
+    {
+        
+        Assert.assertEquals(10, blackorc.getTeamID());
+        //return teamID;
+    }
+    public void testSetLocation()  //Method for relocation during gameplay
+    {
+        cell.resetPlayer();
+        //cell = (PitchCell) newcell;
+        cell.setPlayer();
+        newcell.setPlayer();
+        blackorc.setActive();
+        //blackorc.setChanged();
+        Assert.assertEquals(true, cell.hasPlayer());
+        Assert.assertEquals(true,newcell.hasPlayer());
+
+
+    }
+
+    public void testSetUpOnLocation() //Method for setting location at game start
+    {
+          newcell.setPlayer();
+          cell=newcell;
+          blackorc.setActive();
+          Assert.assertEquals(true, cell.hasPlayer());
+          Assert.assertEquals(true, newcell.hasPlayer());
+          Assert.assertEquals(true, blackorc.getActive());
+     }
+    public void testGetLocation()
+    {
+        
+        Assert.assertEquals(1,cell.getRow());
+        Assert.assertEquals(2,cell.getColumn());
+        Assert.assertEquals(0,cell.getZone());
+        Assert.assertEquals(false,cell.hasPlayer());
+
+        }
+
+/*    public void testIsNear() {
+         location=new Cell(1,2);
+         blackorc.setLocation(location);
+         //location=blackorc.getLocation();
+         //location=new Cell(1,2);
+         clickedCell=new Cell(3,4);
+         Assert.assertEquals(false,blackorc.isNear(clickedCell));
+    
+    }
+*/
+  public void testSetActive() {
+        //this.isActive = true;
+        blackorc.setActive();
+        Assert.assertEquals(true, blackorc.getActive());
+        //setChanged();
+        //notifyObservers();
+    }
+
+
+    public void testGetActive() {
+       // return isActive;
+      Assert.assertEquals(false,blackorc.getActive());
+    }
+
+// failed
+ /*   public void testToString() {
+        //String playerInfo = "player in cell: " + location;
+        //return playerInfo;
+        //blackorc.toString();
+        Assert.assertEquals("1",blackorc.getLocation().toString());
+        
+    }
+*/
+
+    public void testGetMa() {
+        //return ma;
+        Assert.assertEquals(1, blackorc.getMa());
+       
+    }
+
+    public void testGetName() {
+       // return name;
+        Assert.assertEquals("Test blackorc", blackorc.getName());
+    }
+
+    public void testGetSt() {
+        //return st;
+        Assert.assertEquals(2, blackorc.getSt());
+    }
+
+    public void testGetAv() {
+        //return av;
+        Assert.assertEquals(4, blackorc.getAv());
+    }
+
+    public void testIsHasMoved(){
+        //return hasMoved;
+        Assert.assertEquals(false,blackorc.hasMoved());
+    }
+
+    public void testGetAg() {
+        Assert.assertEquals(3, blackorc.getAg());
+    }
+
+
+}

@@ -1,0 +1,51 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package testMap;
+
+import bloodbowl.model.map.PitchCell;
+import junit.framework.Assert;
+import junit.framework.TestCase;
+
+/**
+ *
+ * @author Administrator
+ */
+public class PitchCellTest extends TestCase {
+
+    private PitchCell pitchcell=null;
+    
+    public PitchCellTest(String testName) {
+        super(testName);
+    }
+
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        pitchcell=new PitchCell(5,6);
+    }
+
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+    }
+
+    /**
+     * Test of setBall method, of class PitchCell.
+     */
+    public void testSetBall() {
+        pitchcell.setBall();
+        Assert.assertEquals(true, pitchcell.isBall);
+    }
+
+    /**
+     * Test of resetBall method, of class PitchCell.
+     */
+    public void testResetBall() {
+        pitchcell.resetBall();
+        Assert.assertEquals(false, pitchcell.isBall);
+    }
+
+}

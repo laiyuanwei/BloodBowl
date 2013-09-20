@@ -1,0 +1,105 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package testPlayers;
+
+import bloodbowl.model.players.ElvesBlitzer;
+import bloodbowl.model.players.ElvesCatcher;
+import bloodbowl.model.players.ElvesFactory;
+import bloodbowl.model.players.ElvesLineman;
+import bloodbowl.model.players.ElvesThrower;
+import junit.framework.Assert;
+import junit.framework.TestCase;
+
+/**
+ *
+ * @author Yuanwei Lai
+ */
+public class ElvesFactoryTest extends TestCase {
+
+    private ElvesFactory elvesfactory=null;
+
+    public ElvesFactoryTest(String testName) {
+        super(testName);
+    }
+
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        elvesfactory= new ElvesFactory();
+    }
+
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+    }
+
+    /**
+     * Test of createCatcher method, of class ElvesFactory.
+     */
+    public void testCreateCatcher() {
+          Assert.assertTrue(elvesfactory.createCatcher() instanceof ElvesCatcher);
+       // Assert.assertEquals(8, elvesfactory.createCatcher().getMa());
+       // Assert.assertEquals(3, elvesfactory.createCatcher().getSt());
+       // Assert.assertEquals(4, elvesfactory.createCatcher().getAg());
+       // Assert.assertEquals(7, elvesfactory.createCatcher().getAv());
+       // Assert.assertEquals("", elvesfactory.createCatcher().getSkillsList());
+
+    }
+
+    /**
+     * Test of createBlitzer method, of class ElvesFactory.
+     */
+        public void testCreateBlitzer() {
+        Assert.assertTrue(elvesfactory.createBlitzer() instanceof ElvesBlitzer);
+    }
+
+    /**
+     * Test of createLineman method, of class ElvesFactory.
+     */
+    public void testCreateLineman() {
+       Assert.assertTrue(elvesfactory.createLineman() instanceof ElvesLineman);
+    }
+
+    /**
+     * Test of createOgre method, of class ElvesFactory.
+     */
+    public void testCreateOgre() {
+       Assert.assertTrue(elvesfactory.createOgre()==null);
+
+
+    }
+
+    /**
+     * Test of createThrower method, of class ElvesFactory.
+     */
+    public void testCreateThrower() {
+        Assert.assertTrue(elvesfactory.createThrower() instanceof ElvesThrower);
+    }
+
+    /**
+     * Test of createBlackorc method, of class ElvesFactory.
+     */
+    public void testCreateBlackorc() {
+         Assert.assertTrue(elvesfactory.createBlackorc()==null);
+    }
+
+    /**
+     * Test of createTroll method, of class ElvesFactory.
+     */
+    public void testCreateTroll() {
+        Assert.assertTrue(elvesfactory.createTroll()==null);
+    }
+
+    /**
+     * Test of createGoblin method, of class ElvesFactory.
+     */
+    public void testCreateGoblin() {
+        Assert.assertTrue(elvesfactory.createGoblin()==null);
+    }
+
+
+
+}

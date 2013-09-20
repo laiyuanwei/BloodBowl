@@ -1,0 +1,303 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package testPlayers;
+
+
+import bloodbowl.model.map.DugoutCell;
+import bloodbowl.model.players.Actions;
+import bloodbowl.model.players.ElvesCatcher;
+import bloodbowl.model.players.Skills;
+import junit.framework.Assert;
+import junit.framework.TestCase;
+
+import java.util.ArrayList;
+
+
+/**
+ * This class test ElvesCatcher class and its relevant methods.
+ * @author Yuanwei Lai
+ */
+public class ElvesCatcherTest extends TestCase {
+    ArrayList<Skills> skillsList = new ArrayList<Skills>();
+    private ElvesCatcher catcher=null;
+    private DugoutCell cell=null;
+    private DugoutCell newcell=null;
+
+
+
+    /**
+     *
+     * @param testName
+     */
+    public ElvesCatcherTest(String testName) {
+        super(testName);
+    }
+
+    /**
+     *
+     * @throws Exception
+     */
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+         catcher=new ElvesCatcher();
+         cell=new DugoutCell(1,2);
+         newcell=new  DugoutCell(1,2);
+       
+    }
+
+    /**
+     *
+     * @throws Exception
+     */
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+    }
+
+    // TODO add test methods here. The name must begin with 'test'. For example:
+    // public void testHello() {}
+
+
+
+    /**
+     * This is test get method.
+     */
+    public void testGetMaLeft(){
+       Assert.assertEquals(8, catcher.getMa());
+    }
+
+    /**
+     * This is test get method.
+     */
+    public void testDecreaseMovementLeft()
+    {
+        catcher.decreaseMovementLeft();
+        Assert.assertEquals(7, catcher.getMa()-1);
+        
+    }
+    /**
+     * This is test set method.
+     */
+    public void testCanMove()
+    {
+        boolean expected;
+        if(catcher.getMa()>0)
+            expected=true;
+        else
+            expected=false;
+       Assert.assertEquals(false,catcher.canMove());
+    }
+    /**
+     * This is test set method.
+     */
+    public void testSetTeamID()
+    {
+        catcher.setTeamID(5);
+        Assert.assertEquals(5,catcher.getTeamID());
+
+        
+    }
+
+    /**
+     * This is test get method.
+     */
+    public void  testGetTeamID()
+    {
+
+        Assert.assertEquals(0, catcher.getTeamID());
+        
+    }
+    /**
+     * This is test set method.
+     */
+    public void testSetLocation()  //Method for relocation during gameplay
+    {
+        cell.resetPlayer();
+        
+        cell.setPlayer();
+        newcell.setPlayer();
+        catcher.setActive();
+      
+        Assert.assertEquals(true, cell.hasPlayer());
+        Assert.assertEquals(true,newcell.hasPlayer());
+
+
+    }
+
+    /**
+     * This is test set method.
+     */
+    public void testSetUpOnLocation() //Method for setting location at game start
+    {
+          newcell.setPlayer();
+          cell=newcell;
+          catcher.setActive();
+          Assert.assertEquals(true, cell.hasPlayer());
+          Assert.assertEquals(true, newcell.hasPlayer());
+          Assert.assertEquals(true, catcher.getActive());
+     }
+    /**
+     * This is test get method.
+     */
+    public void testGetLocation()
+    {
+
+        Assert.assertEquals(1,cell.getRow());
+        Assert.assertEquals(2,cell.getColumn());
+        Assert.assertEquals(1,cell.getZone());
+        Assert.assertEquals(false,cell.hasPlayer());
+
+        }
+
+    /**
+     * This is test set method.
+     */
+    public void testSetActive() {
+        
+        catcher.setActive();
+        Assert.assertEquals(true, catcher.getActive());
+       
+    }
+
+
+    /**
+     * This is test get method.
+     */
+    public void testGetActive() {
+       // return isActive;
+      Assert.assertEquals(false,catcher.getActive());
+    }
+
+
+
+    /**
+     * This is test get method.
+     */
+    public void testGetMa() {
+        
+        Assert.assertEquals(8, catcher.getMa());
+
+    }
+
+ 
+    /**
+     * This is test get method.
+     */
+    public void testGetSt() {
+        
+        Assert.assertEquals(3, catcher.getSt());
+    }
+
+    /**
+     * This is test get method.
+     */
+    public void testGetAv() {
+       
+        Assert.assertEquals(7, catcher.getAv());
+    }
+
+    /**
+     * This is test hasMoved() method.
+     */
+    public void testHasMoved(){
+        
+        Assert.assertEquals(false,catcher.hasMoved());
+    }
+
+    /**
+     * This is test get method.
+     */
+    public void testGetAg() {
+        Assert.assertEquals(4, catcher.getAg());
+    }
+
+     /**
+      *  This method is to test whether the movement
+      *  finished or not.
+      */
+    public void testDoneActionInTurn(){
+        catcher.doneActionInTurn();
+        Assert.assertEquals(true,catcher.hasMoved());
+    }
+
+    /**
+     * This method is to test GetIsInjured method.
+     */
+    public void testGetIsInjured() {
+
+        catcher.setIsInjured(true);
+        Boolean actual=catcher.getIsInjured();
+        Assert.assertTrue(actual);
+    }
+
+    /**
+     * This method is to test the SetIsInjured method.
+     */
+    public void testSetIsInjured(){
+       catcher.setIsInjured(Boolean.TRUE);
+       Assert.assertTrue(catcher.getIsInjured());
+    }
+
+    /**
+     * This method is to test return value of method GetIsknockedOut.
+     */
+    public void testGetIsKnockedOut(){
+       catcher.setIsKnockedOut(Boolean.TRUE);
+       Assert.assertTrue(catcher.getIsKnockedOut());
+    }
+
+    /**
+     * This method is to test the SetIsKnockedOut method.
+     */
+    public void testSetIsKnockedOut(){
+      catcher.setIsKnockedOut(Boolean.TRUE);
+      Assert.assertTrue(catcher.getIsKnockedOut());
+    }
+
+    /**
+     *This method is to test whether the coach can increase
+     * MVP's point by default value(five points a time).
+     */
+    public void testSelectedMostValued() {
+        catcher.selectedMostValued();
+        Assert.assertEquals(5,catcher.getPoints());
+    }
+
+    /**
+     * This method is to test whether the coach can increase
+     * MVP's point by any points(user input).
+     */
+    public void testIncrementPointsBy() {
+       
+        catcher.incrementPointsBy(10); // add 10 points
+        Assert.assertEquals(10,catcher.getPoints());
+    }
+
+    /**
+     * This method is to test whether AwardPointsForAction method can return
+     * right score of player or not after an action. For example, a player perform
+     * a series action, the score should be sum of every action's score.
+     */
+    public void TestAwardPointsForAction() {
+
+        for(int i=0;i<=10;i++){
+        catcher.awardPointsForAction(Actions.PASS);
+        catcher.awardPointsForAction(Actions.KNOCKDOWN);
+        catcher.awardPointsForAction(Actions.TACKLE);
+        catcher.awardPointsForAction(Actions.TOUCHDOWN);
+        }
+        Assert.assertEquals(10*(1+2+2+3),catcher.getPoints());
+    }
+
+    /**
+     * This method is to test the GetPoints method.
+     */
+    public void TestGetPoints(){
+        catcher.incrementPointsBy(1);
+        Assert.assertEquals(1,catcher.getPoints());
+    }
+}

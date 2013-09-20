@@ -1,0 +1,64 @@
+package bloodbowl.model.map;
+
+/*
+ * PitchCells can hold the player and the ball both
+ */
+public class PitchCell extends Cell
+{
+	public boolean isBall;
+        /************************Constants***********************/
+        public static final int END_ZONE=1,WIDE_ZONE_UPPER=4,
+                WIDE_ZONE_LOWER=5,NORMAL_ZONE=2,SCRIMMAGE_ZONE=3;
+        /********************************************************/
+	public PitchCell(int rowID, int columnID)
+	{
+            super(rowID,columnID);
+            isBall=false;
+
+            
+
+            //Set zones for the left half of pitch
+            if(columnID>=0 && columnID<=13)
+            {
+                if (columnID == 0) {
+                    zone=END_ZONE;
+                } else if (rowID >= 0 && rowID <= 3) {
+                    zone=WIDE_ZONE_UPPER;
+                } else if (rowID >= 11 && rowID <= 14) {
+                    zone=WIDE_ZONE_LOWER;
+                } else if (rowID >= 4 && rowID <= 10 && columnID < 12) {
+                    zone=NORMAL_ZONE;
+                } else {
+                    zone=SCRIMMAGE_ZONE;
+                }
+            }
+
+            //Set zones for the right half of pitch
+            if(columnID>=14 && columnID<=25)
+            {
+                if (columnID == 25) {
+                    zone=END_ZONE;
+                } else if (rowID >= 0 && rowID <= 3) {
+                    zone=WIDE_ZONE_UPPER;
+                } else if (rowID >= 11 && rowID <= 14) {
+                    zone=WIDE_ZONE_LOWER;
+                } else if (rowID >= 4 && rowID <= 10 && columnID > 13) {
+                    zone=NORMAL_ZONE;
+                } else {
+                    zone=SCRIMMAGE_ZONE;
+                }
+            }
+	}
+	
+	public void setBall()
+	{
+		isBall=true;
+	}
+	public void resetBall()
+	{
+		isBall=false;
+	}
+        
+
+}
+

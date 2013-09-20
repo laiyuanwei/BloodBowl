@@ -1,0 +1,43 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package testPlayers;
+
+import bloodbowl.model.players.HumansFactory;
+import bloodbowl.model.players.Player;
+import bloodbowl.model.players.PlayerType;
+import bloodbowl.model.players.PlayersFactory;
+import junit.framework.Assert;
+import junit.framework.TestCase;
+
+/**
+ *
+ * @author singh
+ */
+public class TestHumansFactory extends TestCase {
+    PlayersFactory humansFactory;
+    Player testLineman;
+    public TestHumansFactory(String testName) {
+        super(testName);
+    }
+
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        humansFactory=new HumansFactory();
+        testLineman=humansFactory.createLineman();
+    }
+
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+    }
+
+    public void testCreatedLinemanType()
+    {
+      Assert.assertTrue(PlayerType.LINEMAN==testLineman.getType());
+    }
+
+}

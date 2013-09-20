@@ -1,0 +1,27 @@
+package bloodbowl.model.map;
+
+public class DugoutCell extends Cell {
+
+    /********************Constants************************/
+    static final int RESERVED_ZONE=1, INJURED_ZONE=2, KNOCKED_ZONE=3;
+    /*****************************************************/
+    public DugoutCell(int rowID, int columnID) {
+        super(rowID, columnID);
+        if(rowID>=0&&rowID<4)
+        {
+            zone=RESERVED_ZONE;		//Reserves
+        }
+        else if(rowID>=4&&rowID<8)
+        {
+            zone=INJURED_ZONE;		//Injured
+        }
+        else
+        {
+            zone=KNOCKED_ZONE;		//Knocked out
+        }
+    }
+
+    public void setZone(int zoneType) {
+        zone = zoneType;
+    }
+}

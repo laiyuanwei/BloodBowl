@@ -1,0 +1,21 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package bloodbowl.model.players;
+import java.io.Serializable;
+
+
+/**
+ * This class serializes each player object.
+ * This is the class which is used to save the player objects in form of  byte streams into the file.
+ * The serialization process makes the program JVM independent.
+ * @author sanam
+ */
+public class PersistentPlayer extends Player implements Serializable {
+    private String player;
+    public String getPlayer(){
+    return player;
+    }
+}

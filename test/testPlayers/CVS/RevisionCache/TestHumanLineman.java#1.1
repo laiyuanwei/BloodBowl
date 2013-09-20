@@ -1,0 +1,40 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package testPlayers;
+
+import bloodbowl.model.players.HumanLineman;
+import bloodbowl.model.players.Player;
+import junit.framework.Assert;
+import junit.framework.TestCase;
+
+/**
+ *
+ * @author Rishinder
+ */
+public class TestHumanLineman extends TestCase {
+
+    private Player testPlayer;
+
+    public TestHumanLineman(String testName) {
+        super(testName);
+    }
+
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        testPlayer=new HumanLineman();
+    }
+
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+    }
+
+    public void testMovementAllowance()
+    {
+        Assert.assertEquals(6, testPlayer.getMa());
+    }
+}

@@ -1,0 +1,370 @@
+package bloodbowl.model.managers;
+
+import bloodbowl.engine.Game;
+import bloodbowl.model.map.Cell;
+import bloodbowl.model.objects.Ball;
+import bloodbowl.model.players.Actions;
+import bloodbowl.model.players.Player;
+import bloodbowl.model.teams.Team;
+import java.io.Serializable;
+
+/**
+ * Class to take care of all the actions that the player can do.
+ * This class will be responsible for the validity of the actions.
+ * It takes care of initiating and committing the action as well.
+ * For all such actions it communicates with the Game Engine i.e. the Game Class.
+ * @author Rishinder
+ * @version 1.0.0
+ */
+public class ActionManager implements Serializable {
+
+    Game game;
+    Player selectedPlayer;
+    private boolean isKickedOff = false;
+    String pickUpMessage;
+    String moveMessage;
+    String passMessage;
+
+    public ActionManager(Game game) {
+        this.game = game;
+    }
+
+    public ActionManager() {
+    }
+
+    /**
+     * Getter for the message, which displays the status of the Pick-up action made.
+     * @return String containing the result of pick up action
+     */
+    public String getPickUpMessage() {
+        return pickUpMessage;
+    }
+
+    /**
+     * Getter for the message, which displays the status of the move action made.
+     * @return String containing the result of move action
+     */
+    public String getMoveMessage() {
+        return moveMessage;
+    }
+
+    /**
+     * Getter for the message, which displays the status of the pass action made.
+     * @return String containing the result of pass action
+     */
+    public String getPassMessage() {
+        return passMessage;
+    }
+
+    /**
+     * Method that informs the Game about the action initiation
+     * @param newGameState Updated state of the game i.e. the current game state.
+     */
+    public void initiateMoveAction() {
+        //game = newGameState;        
+        selectedPlayer = game.getSelectedPlayer();
+        game.initiateMoveAction();
+    }
+
+    /**
+     * Method to inform the Game about the action completion
+     */
+    public void commitMove() {
+        if (selectedPlayer != null) {
+            selectedPlayer.doneActionInTurn();
+        }
+        selectedPlayer = null;
+        game.commitMoveAction();
+    }
+
+    /**
+     * Method to check if the player is tackled by an opponent
+     */
+    public boolean isTackleZone() {
+        int totalOpponents = (game.getOpponentTeam()).getTotalPlayers();
+        for (int i = 0; i < totalOpponents; i++) {
+            if ((((game.getOpponentTeam()).getPlayer(i))).getActive()) {
+                if (((game.getOpponentTeam()).getPlayer(i)).isNear(selectedPlayer.getLocation())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Method to check if the destination is tackled by an opponent
+     */
+    public int getOpponentsInfluenceOn(Cell destination) {
+        int opponentsInfluenceOnDestination = 0;
+        int totalOpponents = (game.getOpponentTeam()).getTotalPlayers();
+        for (int i = 0; i < totalOpponents; i++) {
+            if ((((game.getOpponentTeam()).getPlayer(i))).getActive()) {
+                if (((game.getOpponentTeam()).getPlayer(i)).isNear(destination)) {
+                    opponentsInfluenceOnDestination++;
+                }
+            }
+        }
+        return opponentsInfluenceOnDestination;
+    }
+
+    public boolean IsKickedOff() {
+        return isKickedOff;
+    }
+
+    /**
+     * Main method for moving the players by validating the move request
+     * @param destinationCell Destination in the pitch, where the player has to move
+     * @return true if the move is successful, else returns false
+     */
+    public boolean moveSelectedPlayerAt(Cell destinationCell) {
+
+        boolean playerMoved = false;
+        boolean tackleIssues = false;
+        boolean isTouchDown = false;
+        if (selectedPlayer != null && selectedPlayer.isNear(destinationCell)
+                && selectedPlayer.getActive() && game.isWaitingForMoveAction()
+                && selectedPlayer.canMove() && !destinationCell.hasPlayer()
+                && selectedPlayer.getTeamID() == game.getCurrentTeam()) {
+            if (isTackleZone()) {
+                if (breakTackle(getOpponentsInfluenceOn(destinationCell))) {
+                    tackleIssues = false;
+                } else {
+                    tackleIssues = true;
+                }
+            }
+            
+            if (tackleIssues) {
+                playerMoved = false;
+                moveMessage = "Player cannot break the tackle because of low dice value.";
+            } else {
+                //Logic to check touchdownScored condition
+                if (selectedPlayer.getTeamID() == Team.TEAM_A && destinationCell.getColumn() == 25 && game.getGameBall().getPossessor() == selectedPlayer) {
+                    isTouchDown = true;
+                } else if (selectedPlayer.getTeamID() == Team.TEAM_B && destinationCell.getColumn() == 0 && game.getGameBall().getPossessor() == selectedPlayer) {
+                    isTouchDown = true;
+                }
+
+                selectedPlayer.setLocation(destinationCell);
+                selectedPlayer.decreaseMovementLeft();
+                playerMoved = true;
+                moveMessage = "Player has moved.";
+
+            }
+        } else {
+            playerMoved = false;
+        }
+
+        if (isTouchDown) {
+            game.touchdownScored();
+        }
+
+        return playerMoved;
+    }
+
+    /**
+     * Method to check if the tackle has been broken
+     * @return true if the tackle has been broken
+     */
+    public boolean breakTackle(int dodgeModifier) {
+        boolean succcessfullBreak = false;
+        int diceFaceValue = DiceManager.rollD6();
+        System.out.println(diceFaceValue);
+        if (diceFaceValue == 6) {
+            succcessfullBreak = true;
+        } else if (diceFaceValue == 1) {
+            succcessfullBreak = false;
+        } else if (diceFaceValue + selectedPlayer.getAg() + 1 - dodgeModifier >= 7) {
+            succcessfullBreak = true;
+        } else {
+            succcessfullBreak = false;
+        }
+
+        System.out.println(diceFaceValue + selectedPlayer.getAg() + 1 - dodgeModifier);
+        return succcessfullBreak;
+    }
+
+    public boolean pickUpBall() {
+        boolean pickUpBallResult = false;
+        int diceFaceVal = DiceManager.rollD6();
+        int modifier = 1;
+        int tackleZoneModifier = 0;
+
+        selectedPlayer = game.getSelectedPlayer();
+
+        if (selectedPlayer != null) {
+            tackleZoneModifier = getOpponentsInfluenceOn(selectedPlayer.getLocation());
+            modifier -= tackleZoneModifier;
+            if (game.getGameBall().getLocation() == selectedPlayer.getLocation()) {
+                if (selectedPlayer.getAg() + diceFaceVal + modifier >= 7) {
+                    game.getGameBall().setPossessor(selectedPlayer);
+                    pickUpBallResult = true;
+                    pickUpMessage = "Player picked up the ball successfully";
+                } else {
+                    game.getGameBall().scatterToAdjacentCell();
+                    pickUpMessage = "Player could not pick up the ball successfully";
+                }
+            } else {
+                pickUpMessage = "There is no ball at this location.";
+            }
+        }
+
+        return pickUpBallResult;
+    }
+
+    /**
+     * Method to implement the pass action in the game.
+     * @param recepientPlayer The receiver of the ball
+     */
+    public boolean performPass(Player recepientPlayer) {
+        boolean passSuccessful = false;
+        Pass passType = Pass.QUICK;
+        String passTypeString = "";
+        int diceFaceVal = DiceManager.rollD6();
+        int modifier = 0;
+        int tackleZoneModifier = 0;
+        passMessage = "";
+
+        selectedPlayer = game.getSelectedPlayer();
+
+        if (game.getGameBall().getPossessor() != null) {
+
+            if (selectedPlayer.getActive() && recepientPlayer.getActive() && selectedPlayer.getTeamID() == recepientPlayer.getTeamID()
+                    && selectedPlayer.getTeamID() == game.getCurrentTeam()
+                    && teamCanPerformPass() && game.getGameBall().getPossessor() == selectedPlayer) {
+
+                passType = computePassType(selectedPlayer, recepientPlayer);
+
+                switch (passType) {
+                    case QUICK:
+                        modifier = 1;
+                        passTypeString = "Quick";
+                        break;
+                    case SHORT:
+                        modifier = 0;
+                        passTypeString = "Short";
+                        break;
+                    case LONG:
+                        modifier = -1;
+                        passTypeString = "Long";
+                        break;
+                    case LONGBOMB:
+                        modifier = -2;
+                        passTypeString = "Long Bomb";
+                        break;
+                }
+
+                tackleZoneModifier = getOpponentsInfluenceOn(selectedPlayer.getLocation());
+                modifier -= tackleZoneModifier;
+
+                System.out.println("Dice Value=" + diceFaceVal);
+                System.out.println("Agility=" + selectedPlayer.getAg());
+                System.out.println("Modifier=" + modifier);
+                if (selectedPlayer.getAg() + diceFaceVal + modifier >= 7) {
+                    selectedPlayer.awardPointsForAction(Actions.PASS);
+                    game.getGameBall().setPossessor(recepientPlayer);
+                    passSuccessful = true;
+                    passMessage = "Pass of type: " + passTypeString + " is successful";
+                } else {
+                    passMessage = "Pass of type: " + passTypeString + " is not successful";
+                }
+            }
+        }
+        return passSuccessful;
+    }
+
+    /**
+     * Method to compute the pass type based upon the concept of the pass ruler.
+     * Pass ruler has been considered as the distance between the two players.
+     * @param thrower The player making the pass
+     * @param catcher The player who is supposed to receive the ball
+     * @return Type of pass depending upon the rules.
+     */
+    public Pass computePassType(Player thrower, Player catcher) {
+        Pass passType;
+        int throwerRow, throwerColumn, catcherRow, catcherColumn, rowDiff, colDiff, displacement;
+
+        throwerRow = thrower.getLocation().getRow();
+        catcherRow = catcher.getLocation().getRow();
+        throwerColumn = thrower.getLocation().getColumn();
+        catcherColumn = catcher.getLocation().getColumn();
+
+        rowDiff = throwerRow - catcherRow;
+        colDiff = throwerColumn - catcherColumn;
+
+        displacement = (int) Math.sqrt(rowDiff * rowDiff + colDiff * colDiff);
+        if (displacement < 4) {
+            passType = Pass.QUICK;
+        } else if (displacement >= 4 && displacement < 7) {
+            passType = Pass.SHORT;
+        } else if (displacement >= 7 && displacement < 11) {
+            passType = Pass.LONG;
+        } else {
+            passType = Pass.LONGBOMB;
+        }
+        return passType;
+    }
+
+    /**
+     * Method to check if a pass has been done by some player of this team.
+     * Made private so that only methods (i.e. performPass) in ActionManager can access it.
+     * @return true if no player in the team has done a pass action.
+     */
+    private boolean teamCanPerformPass() {
+        boolean passAllowed = false;
+
+        if (game.getCurrentTeam() == Team.TEAM_A) {
+            if (!game.getTeamA().getPlayerHasMadePass()) {
+                passAllowed = true;
+            }
+        } else {
+            if (!game.getTeamB().getPlayerHasMadePass()) {
+                passAllowed = true;
+            }
+        }
+        return passAllowed;
+    }
+
+    /**
+     * Method to implement Game Kick-Off
+     */
+    public void kickOff() {
+        if (game == null) {
+            game = Game.getInstance();
+        }
+        Ball ball = game.getGameBall();
+        int directionForKickOff = DiceManager.rollD8();
+        int distanceForKickOff = DiceManager.rollD6();
+
+        isKickedOff = true;
+
+        switch (directionForKickOff) {
+            case 0:
+                ball.moveBottomLeftBy(distanceForKickOff);
+                break;
+            case 1:
+                ball.moveBottomRightBy(distanceForKickOff);
+                break;
+            case 2:
+                ball.moveDownBy(distanceForKickOff);
+                break;
+            case 3:
+                ball.moveUpBy(distanceForKickOff);
+                break;
+            case 4:
+                ball.moveRightBy(distanceForKickOff);
+                break;
+            case 5:
+                ball.moveLeftBy(distanceForKickOff);
+                break;
+            case 6:
+                ball.moveTopLeftBy(distanceForKickOff);
+                break;
+            case 7:
+                ball.moveTopRightBy(distanceForKickOff);
+                break;
+        }
+
+        ball.scatterToAdjacentCell();
+    }
+}

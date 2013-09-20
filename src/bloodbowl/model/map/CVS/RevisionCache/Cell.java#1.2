@@ -1,0 +1,71 @@
+package bloodbowl.model.map;
+/*
+ * Base class for PitchCell and DugoutCell
+ * 1) Holds common properties of the Pitch and Dug-out cells
+ * 2) Should not be extended by any other class except PitchCell and DugoutCell
+ */
+
+public class Cell {
+
+    int rowID, columnID;
+    int zone;               //Wide Zone, End Zone, Scrimmage, Normal Zone
+    boolean containsPlayer;
+
+    Cell(int cellRow, int cellCol) {
+        zone = 0;
+        rowID = cellRow;
+        columnID = cellCol;
+        containsPlayer = false;
+    }
+
+    public int getColumn() {
+        return columnID;
+    }
+
+    public int getRow() {
+        return rowID;
+    }
+
+    @Override
+    public String toString() {
+        String cellInfo;
+        cellInfo = "column:" + columnID + " row:" + rowID;
+        return cellInfo;
+    }
+
+    public int getZone() {
+        return zone;
+    }
+
+    public void setPlayer() {
+        containsPlayer = true;
+    }
+
+    public void resetPlayer() {
+        containsPlayer = false;
+    }
+
+    public boolean hasPlayer() {
+        return containsPlayer;
+    }
+
+    //Method for printing cell information for debugging on console.
+    //Prints all players as 'X' irrespective of their types and teams.
+    //Prints for both grid and dugout.
+    public void printStatus() {
+        if (!containsPlayer) {
+            if (zone == 1) {
+                System.out.print("O ");
+            } else if (zone == 2) {
+                System.out.print("@ ");
+            } else if (zone == 3) {
+                System.out.print("* ");
+            } else {
+                System.out.print("Q ");
+            }
+        } else {
+            System.out.print("X ");
+        }
+
+    }
+}

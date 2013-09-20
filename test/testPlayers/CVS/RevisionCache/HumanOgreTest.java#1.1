@@ -1,0 +1,230 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package testPlayers;
+
+import bloodbowl.model.map.Cell;
+import bloodbowl.model.players.HumanOgre;
+import bloodbowl.model.players.PlayerType;
+import bloodbowl.model.players.Skills;
+import junit.framework.Assert;
+import junit.framework.TestCase;
+
+import java.util.ArrayList;
+
+
+/**
+ * This class test HumanOgre class and its relevant methods.
+ * @author Yuanwei Lai
+ */
+public class HumanOgreTest extends TestCase {
+    ArrayList<Skills> skillsList = new ArrayList<Skills>();
+    private HumanOgre Ogre=null;
+    private Cell cell=null;
+    private Cell newcell=null;
+    private Cell clickedCell=null;
+    private Cell location=null;
+
+
+    /**
+     *
+     * @param testName
+     */
+    public HumanOgreTest(String testName) {
+        super(testName);
+    }
+
+    /**
+     *
+     * @throws Exception
+     */
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+       // skill=Skills.PASS;
+       // Ogre=new Ogre(1,2,3,4,10,skillsList,PlayerType.OGRE);
+        Ogre=new HumanOgre();
+        cell=new Cell(1,2);
+        newcell=new  Cell(1,2);
+       // location=new Cell(1,2);
+       // clickedCell=new Cell(3,4);
+    }
+
+    /**
+     *
+     * @throws Exception
+     */
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+    }
+
+    // TODO add test methods here. The name must begin with 'test'. For example:
+    // public void testHello() {}
+
+    /**
+     * This is test set method.
+     */
+    public void testResetMovementLeft(){
+       Ogre.resetMovementLeft();
+       Assert.assertEquals(5, Ogre.getMa());
+    }
+
+    /**
+     * This is test get method.
+     */
+    public void testGetMaLeft(){
+       Assert.assertEquals(5, Ogre.getMa());
+    }
+
+    /**
+     * This is test set method.
+     */
+    public void testDecreaseMovementLeft()
+    {
+        Ogre.decreaseMovementLeft();
+        Assert.assertEquals(4, Ogre.getMa()-1);
+        //maLeft--;
+    }
+    /**
+     * This is test get method.
+     */
+    public void testCanMove()
+    {
+        boolean expected;
+        if(Ogre.getMa()>0)
+            expected=true;
+        else
+            expected=false;
+       Assert.assertEquals(false,Ogre.canMove());
+    }
+    /**
+     * This is test set method.
+     */
+    public void testSetTeamID()
+    {
+        Ogre.setTeamID(5);
+        Assert.assertEquals(5,Ogre.getTeamID());
+
+        //teamID=id;
+    }
+
+    /**
+     * This is test get method.
+     */
+    public void  testGetTeamID()
+    {
+
+        Assert.assertEquals(0, Ogre.getTeamID());
+        //return teamID;
+    }
+    /**
+     * This is test set method.
+     */
+    public void testSetLocation()  //Method for relocation during gameplay
+    {
+        cell.resetPlayer();
+        //cell = (PitchCell) newcell;
+        cell.setPlayer();
+        newcell.setPlayer();
+        Ogre.setActive();
+        //blackorc.setChanged();
+        Assert.assertEquals(true, cell.hasPlayer());
+        Assert.assertEquals(true,newcell.hasPlayer());
+
+
+    }
+
+    /**
+     * This is test set method.
+     */
+    public void testSetUpOnLocation() //Method for setting location at game start
+    {
+          newcell.setPlayer();
+          cell=newcell;
+          Ogre.setActive();
+          Assert.assertEquals(true, cell.hasPlayer());
+          Assert.assertEquals(true, newcell.hasPlayer());
+          Assert.assertEquals(true, Ogre.getActive());
+     }
+    /**
+     * This is test get method.
+     */
+    public void testGetLocation()
+    {
+
+        Assert.assertEquals(1,cell.getRow());
+        Assert.assertEquals(2,cell.getColumn());
+        Assert.assertEquals(0,cell.getZone());
+        Assert.assertEquals(false,cell.hasPlayer());
+
+        }
+
+
+    /**
+     * This is test set method.
+     */
+    public void testSetActive() {
+        //this.isActive = true;
+        Ogre.setActive();
+        Assert.assertEquals(true, Ogre.getActive());
+        //setChanged();
+        //notifyObservers();
+    }
+
+
+    /**
+     * This is test get method.
+     */
+    public void testGetActive() {
+       // return isActive;
+      Assert.assertEquals(false,Ogre.getActive());
+    }
+
+
+
+    /**
+     * This is test get method.
+     */
+    public void testGetMa() {
+        //return ma;
+        Assert.assertEquals(5, Ogre.getMa());
+
+    }
+
+
+    /**
+     * This is test get method.
+     */
+    public void testGetSt() {
+        //return st;
+        Assert.assertEquals(5, Ogre.getSt());
+    }
+
+    /**
+     * This is test get method.
+     */
+    public void testGetAv() {
+        //return av;
+        Assert.assertEquals(9, Ogre.getAv());
+    }
+
+    /**
+     * This is test get method.
+     */
+    public void testHasMoved(){
+        //return hasMoved;
+        Assert.assertEquals(false,Ogre.hasMoved());
+    }
+
+    /**
+     * This is test get method.
+     */
+    public void testGetAg() {
+        Assert.assertEquals(2, Ogre.getAg());
+    }
+
+
+}

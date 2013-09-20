@@ -1,0 +1,149 @@
+package bloodbowl.model.players;
+
+import bloodbowl.model.map.Cell;
+import bloodbowl.model.map.PitchCell;
+import java.util.ArrayList;
+import java.util.Observable;
+
+public abstract class Player extends Observable {
+
+    int ma, st, ag, av;     //ma=Movement Allowance, st=Strength, ag=Agility, av=Armor Value
+    int maLeft;             //Movement allowance left after a move
+    public String name;
+    int teamID;             //For Team A, teamID=1. For Team B, teamID=2;
+    Cell location;          //Location in the Map (pitch or the dugout)
+    boolean isActive;       //Player is on pitch
+    boolean isInjured;      //Player is in injured zone
+    boolean isKnockedOut;   //Player is in knowcked out zone
+    boolean hasMoved;       //Player has made its move in the turn
+    public static final int BLACKORC = 0, BLITZER = 1, CATCHER = 2, GOBLIN = 3, LINEMAN = 4, OGRE = 5, THROWER = 6, TROLL = 7;
+    ArrayList<Skills> skillsList;
+
+    public Player(int ma, int st, int ag, int av, String name, int teamID, ArrayList<Skills> skills) {
+        this.ma = ma;
+        this.st = st;
+        this.ag = ag;
+        this.av = av;
+        this.name = name;
+        this.teamID = teamID;
+        skillsList = skills;
+        maLeft = ma;
+    }
+
+    public void resetMovementLeft() {
+        maLeft = ma;
+    }
+
+    public void decreaseMovementLeft() {
+        maLeft--;
+    }
+
+    public boolean canMove() {
+        if (maLeft > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void setTeamID(int id) {
+        teamID = id;
+    }
+
+    public int getTeamID() {
+        return teamID;
+    }
+
+    public void setLocation(Cell newLocation) //Method for relocation during gameplay
+    {
+        location.resetPlayer();
+        //newLocation.setPlayer();        //Inform cell that it has something
+        location = (PitchCell) newLocation;
+        location.setPlayer();
+        setActive();
+        
+        setChanged();
+        notifyObservers();
+    }
+
+    public void setUpOnLocation(Cell setUpLocation) //Method for setting location at game start
+    {
+        setUpLocation.setPlayer();      //Inform cell that it has something
+        location = setUpLocation;         //Assign player to the respective cell
+        isActive = false;                  //Make the player active
+
+        setChanged();
+        notifyObservers();
+
+    }
+
+    public Cell getLocation() {
+        return location;
+    }
+
+    public boolean isNear(Cell clickedCell) {
+        boolean isNearVar = false;
+        if (clickedCell.getRow() == location.getRow() - 1 && clickedCell.getColumn() == location.getColumn() - 1) {
+            isNearVar = true;
+        } else if (clickedCell.getRow() == location.getRow() - 1 && clickedCell.getColumn() == location.getColumn()) {
+            isNearVar = true;
+        } else if (clickedCell.getRow() == location.getRow() - 1 && clickedCell.getColumn() == location.getColumn() + 1) {
+            isNearVar = true;
+        } else if (clickedCell.getRow() == location.getRow() + 1 && clickedCell.getColumn() == location.getColumn() - 1) {
+            isNearVar = true;
+        } else if (clickedCell.getRow() == location.getRow() + 1 && clickedCell.getColumn() == location.getColumn()) {
+            isNearVar = true;
+        } else if (clickedCell.getRow() == location.getRow() + 1 && clickedCell.getColumn() == location.getColumn() + 1) {
+            isNearVar = true;
+        } else if (clickedCell.getRow() == location.getRow() && clickedCell.getColumn() == location.getColumn() - 1) {
+            isNearVar = true;
+        } else if (clickedCell.getRow() == location.getRow() && clickedCell.getColumn() == location.getColumn() + 1) {
+            isNearVar = true;
+        }
+
+        return isNearVar;
+    }
+
+    public void setActive() {
+        this.isActive = true;
+
+        setChanged();
+        notifyObservers();
+    }
+
+    public boolean getActive() {
+        return isActive;
+    }
+
+    @Override
+    public String toString() {
+        String playerInfo = "player in cell: " + location;
+        return playerInfo;
+    }
+
+
+    public int getMa() {
+        return ma;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getSt() {
+        return st;
+    }
+
+    public int getAv() {
+        return av;
+    }
+
+    public boolean isHasMoved() {
+        return hasMoved;
+    }
+
+    public int getAg() {
+        return ag;
+    }
+
+}
